@@ -7,7 +7,6 @@ import {
   ProductCategory,
   UI_COPY,
 } from '../data/bakeryData';
-import { LoqmahBoxCard } from './LoqmahBoxCard';
 import { SmartImage } from './SmartImage';
 
 interface ProductsViewProps {
@@ -234,7 +233,7 @@ export function ProductsView({
         </section>
       )}
 
-      {/* Additional Verified Bakery Specialties */}
+      {/* Non-photographed Verified Bakery Items (Name Only) */}
       {visibleAdditional.length > 0 && (
         <section
           aria-labelledby="more-products-heading"
@@ -247,26 +246,20 @@ export function ProductsView({
             {UI_COPY.products.moreHeading[lang]}
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
             {visibleAdditional.map((item) => (
               <article
                 key={item.id}
-                className="p-5 sm:p-6 rounded-2xl bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22]"
+                className="p-5 rounded-2xl bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22]"
               >
-                <h3 className="font-display text-lg font-bold text-[#241914] dark:text-[#F6EDE3]">
+                <h3 className="font-display text-base sm:text-lg font-bold text-[#241914] dark:text-[#F6EDE3]">
                   {item.name[lang]}
                 </h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-[#5C473B] dark:text-[#CDBBAE]">
-                  {item.description[lang]}
-                </p>
               </article>
             ))}
           </div>
         </section>
       )}
-
-      {/* Interactive Loqmah Box Card */}
-      <LoqmahBoxCard lang={lang} />
     </div>
   );
 }

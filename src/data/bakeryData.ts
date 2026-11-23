@@ -251,6 +251,10 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
       ar: 'طبقات من اللطافة المغموسة بنكهة القهوة الفاخرة والكاكاو المر.',
       en: 'Delicate layers steeped in fine coffee flavor and bitter cocoa.',
     },
+    varieties: {
+      ar: ['حلويات منوعة'],
+      en: ['Assorted Sweets'],
+    },
   },
   {
     id: 'loqmah-box',
@@ -366,18 +370,6 @@ export const ADDITIONAL_PRODUCTS: readonly AdditionalProduct[] = [
     },
   },
   {
-    id: 'assorted-sweets',
-    category: 'sweets',
-    name: {
-      ar: 'حلويات منوعة',
-      en: 'Assorted Sweets',
-    },
-    description: {
-      ar: 'كيك أنيق وحلويات منوعة بأصناف متعددة.',
-      en: 'Assorted sweets across diverse varieties.',
-    },
-  },
-  {
     id: 'raqaq-marhaba',
     category: 'savory',
     name: {
@@ -469,8 +461,8 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
       en: 'Which elegant cakes are available for occasions?',
     },
     answer: {
-      ar: 'تتوفر تشكيلة الكيك الأنيق بأصناف: كيكة بلاك فورست، كيكة وايت فورست، كيكة فيريرو روشيه، كيكة الجزر، وكيكة الفراولة، إضافةً إلى التيراميسو والحلويات المنوعة.',
-      en: 'Our elegant cakes include Black Forest Cake, White Forest Cake, Ferrero Rocher Cake, Carrot Cake, and Strawberry Cake, alongside tiramisu and assorted sweets.',
+      ar: 'تجد أصناف الكيك الأنيق المتوفرة مع صورها في صفحة المنتجات.',
+      en: 'You can view all available elegant cakes with photos on the Products page.',
     },
   },
   {
@@ -480,8 +472,8 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
       en: 'How can I choose the Loqmah Box assortment?',
     },
     answer: {
-      ar: '«بوكس اللقمة» هو بوكس مناقيش صغيرة متنوعة تختار أصنافها على ذوقك من أصناف المناقيش: زعتر، ولحم، وجبنة، ولحم بعجين.',
-      en: 'The Loqmah Box is an assorted mini mankousheh box where you choose your mix from our mankousheh varieties: za’atar, meat, cheese, and lahm bi ajeen.',
+      ar: '«بوكس اللقمة» بوكس مناقيش صغيرة متنوعة تختار أصنافها على ذوقك؛ راجع تفاصيله في صفحة المنتجات.',
+      en: 'The Loqmah Box is an assorted mini mankousheh box tailored to your taste; see full details on the Products page.',
     },
   },
   {
@@ -491,8 +483,8 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
       en: 'Are seasonal specialties available?',
     },
     answer: {
-      ar: 'نعم، تتوفر أصناف رمضان ضمن تشكيلة اطايب مرحبا إلى جانب رقاق مرحبا والمعجنات والمخبوزات.',
-      en: 'Yes, Ramadan specialties are available within Atayeb Marhaba’s selection alongside Raqaq Marhaba, pastries, and baked goods.',
+      ar: 'نعم، تتوفر أصناف رمضان ضمن تشكيلة اطايب مرحبا في صفحة المنتجات.',
+      en: 'Yes, Ramadan specialties are available within Atayeb Marhaba’s selection on the Products page.',
     },
   },
 ] as const;

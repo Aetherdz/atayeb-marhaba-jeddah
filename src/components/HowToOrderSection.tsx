@@ -27,9 +27,9 @@ export function HowToOrderSection({
         {UI_COPY.howToOrder.title[lang]}
       </h2>
 
-      <div className="rounded-2xl bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22] grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x rtl:md:divide-x-reverse divide-[#EFE3D5] dark:divide-[#332720]">
+      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x rtl:md:divide-x-reverse divide-[#EFE3D5] dark:divide-[#332720]">
         {/* Path 1: Delivery Apps (names only, no links) */}
-        <div className="p-5 sm:px-6 flex flex-col justify-between gap-2">
+        <div className="py-4 first:pt-0 md:py-1 md:pe-6 flex flex-col justify-between gap-2">
           <span className="text-xs font-semibold text-[#6B5446] dark:text-[#BFA99A]">
             {UI_COPY.howToOrder.step1Title[lang]}
           </span>
@@ -44,7 +44,7 @@ export function HowToOrderSection({
         </div>
 
         {/* Path 2: Jeddah Branches via Google Maps */}
-        <div className="p-5 sm:px-6 flex flex-col justify-between gap-2">
+        <div className="py-4 md:py-1 md:px-6 flex flex-col justify-between gap-2">
           <span className="text-xs font-semibold text-[#6B5446] dark:text-[#BFA99A]">
             {UI_COPY.howToOrder.step2Title[lang]}
           </span>
@@ -61,7 +61,7 @@ export function HowToOrderSection({
         </div>
 
         {/* Path 3: Instagram Messaging */}
-        <div className="p-5 sm:px-6 flex flex-col justify-between gap-2">
+        <div className="py-4 last:pb-0 md:py-1 md:ps-6 flex flex-col justify-between gap-2">
           <span className="text-xs font-semibold text-[#6B5446] dark:text-[#BFA99A]">
             {UI_COPY.howToOrder.step3Title[lang]}
           </span>

@@ -1,4 +1,4 @@
-import { ExternalLink, Instagram } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ExternalLink, Instagram } from 'lucide-react';
 import {
   DELIVERY_APPS,
   INSTAGRAM_URL,
@@ -15,6 +15,8 @@ interface ContactViewProps {
 }
 
 export function ContactView({ lang, onNavigate }: ContactViewProps) {
+  const DirectionArrow = lang === 'ar' ? ArrowLeft : ArrowRight;
+
   return (
     <div className="space-y-12">
       <div className="max-w-2xl space-y-2.5">
@@ -26,49 +28,29 @@ export function ContactView({ lang, onNavigate }: ContactViewProps) {
         </p>
       </div>
 
-      {/* Verbatim Instagram Bio (appears once only on the site) */}
-      <section
-        aria-labelledby="instagram-bio-heading"
-        className="p-6 sm:p-8 rounded-2xl bg-[#F4ECE1] dark:bg-[#201814] border border-[#E6D8C8] dark:border-[#362A22] space-y-4"
-      >
-        <div className="flex flex-wrap items-center justify-between gap-3">
+      {/* Single Unified Contact & Ordering Block */}
+      <div className="p-6 sm:p-8 rounded-2xl bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22] space-y-8">
+        {/* 1. Verbatim Instagram Bio (Once Only on the Site) */}
+        <section aria-labelledby="instagram-bio-heading" className="space-y-3">
           <h2
             id="instagram-bio-heading"
             className="text-xs sm:text-sm font-semibold text-[#5C473B] dark:text-[#CDBBAE]"
           >
             {UI_COPY.contact.bioSourceLabel[lang]}
           </h2>
-          <a
-            href={INSTAGRAM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#241914] dark:text-[#F6EDE3] underline decoration-[#C9B39E] dark:decoration-[#665143] underline-offset-4 hover:decoration-[#241914] dark:hover:decoration-[#F6EDE3] transition-colors rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
-          >
-            <span dir="ltr">@atayeb_marhaba</span>
-            <ExternalLink className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-          </a>
+
+          <p className="font-display text-base sm:text-lg font-medium leading-[1.8] text-[#241914] dark:text-[#F6EDE3]">
+            {UI_COPY.bio[lang]}
+          </p>
+        </section>
+
+        {/* 2. Full How to Order Pathways */}
+        <div className="pt-7 border-t border-[#EFE3D5] dark:border-[#332720]">
+          <HowToOrderSection lang={lang} onNavigate={onNavigate} />
         </div>
 
-        <p className="font-display text-base sm:text-lg font-medium leading-[1.8] text-[#241914] dark:text-[#F6EDE3]">
-          {UI_COPY.bio[lang]}
-        </p>
-      </section>
-
-      {/* Simplified Compact How to Order Row */}
-      <HowToOrderSection lang={lang} onNavigate={onNavigate} />
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        {/* Primary Contact Card: Instagram */}
-        <section className="lg:col-span-7 p-6 sm:p-8 rounded-2xl bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22] flex flex-col justify-between gap-8">
-          <div className="space-y-3">
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-[#241914] dark:text-[#F6EDE3]">
-              {UI_COPY.contact.instagramCardTitle[lang]}
-            </h2>
-            <p className="text-sm sm:text-base leading-relaxed text-[#5C473B] dark:text-[#CDBBAE] max-w-xl">
-              {UI_COPY.contact.instagramCardDesc[lang]}
-            </p>
-          </div>
-
+        {/* 3. Single Unified Action & Channels Row */}
+        <div className="pt-7 border-t border-[#EFE3D5] dark:border-[#332720] flex flex-col gap-5">
           <div className="flex flex-wrap items-center gap-4">
             <a
               href={INSTAGRAM_URL}
@@ -81,51 +63,32 @@ export function ContactView({ lang, onNavigate }: ContactViewProps) {
               <ExternalLink className="w-4 h-4 opacity-80" aria-hidden="true" />
             </a>
 
-            <span
-              dir="ltr"
-              className="text-sm font-medium text-[#6B5446] dark:text-[#BFA99A]"
+            <button
+              type="button"
+              onClick={() => onNavigate('branches')}
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#241914] dark:text-[#F6EDE3] underline decoration-[#C9B39E] dark:decoration-[#665143] underline-offset-4 hover:decoration-[#241914] dark:hover:decoration-[#F6EDE3] transition-colors whitespace-nowrap shrink-0 cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
             >
-              @atayeb_marhaba
+              <span>{UI_COPY.actions.viewBranches[lang]}</span>
+              <DirectionArrow className="w-4 h-4 shrink-0" aria-hidden="true" />
+            </button>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-y-2 gap-x-4 text-sm text-[#5C473B] dark:text-[#CDBBAE]">
+            <span>{UI_COPY.contact.facebookText[lang]}</span>
+            <span
+              aria-hidden="true"
+              className="hidden sm:inline text-[#B8A18D] dark:text-[#665347]"
+            >
+              ·
+            </span>
+            <span dir="ltr" className="font-medium text-[#241914] dark:text-[#F6EDE3]">
+              {DELIVERY_APPS.join(' · ')}
             </span>
           </div>
-        </section>
-
-        {/* Secondary Social Note: Facebook */}
-        <section className="lg:col-span-5 p-6 sm:p-8 rounded-2xl bg-[#F4ECE1] dark:bg-[#201814] border border-[#E6D8C8] dark:border-[#362A22] flex flex-col justify-center gap-3">
-          <h2 className="font-display text-xl font-bold text-[#241914] dark:text-[#F6EDE3]">
-            {UI_COPY.contact.facebookTitle[lang]}
-          </h2>
-          <p className="text-sm sm:text-base leading-relaxed text-[#523E33] dark:text-[#D5C3B5]">
-            {UI_COPY.contact.facebookText[lang]}
-          </p>
-        </section>
+        </div>
       </div>
 
-      {/* Ordering via Delivery Apps (Names ONLY, No Links) */}
-      <section className="p-6 sm:p-8 rounded-2xl bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22] space-y-6">
-        <div className="space-y-2">
-          <h2 className="font-display text-xl sm:text-2xl font-bold text-[#241914] dark:text-[#F6EDE3]">
-            {UI_COPY.contact.deliveryTitle[lang]}
-          </h2>
-          <p className="text-sm sm:text-base text-[#5C473B] dark:text-[#CDBBAE]">
-            {UI_COPY.contact.deliveryText[lang]}
-          </p>
-        </div>
-
-        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
-          {DELIVERY_APPS.map((appName) => (
-            <li
-              key={appName}
-              dir="ltr"
-              className="px-4 py-3.5 rounded-xl bg-[#F7F0E6] dark:bg-[#2B211B] border border-[#E8DAC9] dark:border-[#3B2E26] text-center font-display text-sm sm:text-base font-semibold text-[#2E2018] dark:text-[#F4E9DE]"
-            >
-              {appName}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* Shortened 3-question FAQ Accordion at the end of Contact page */}
+      {/* Shortened 3-question FAQ Accordion */}
       <FaqSection lang={lang} />
     </div>
   );

@@ -93,13 +93,10 @@ export function GalleryView({ lang, onOpenLightbox }: GalleryViewProps) {
               </span>
             </button>
 
-            <figcaption className="p-4 sm:p-5 space-y-1">
+            <figcaption className="px-4 py-3.5 sm:px-5 sm:py-4">
               <h2 className="font-display text-base sm:text-lg font-bold text-[#241914] dark:text-[#F6EDE3]">
                 {photo.title[lang]}
               </h2>
-              <p className="text-xs sm:text-sm leading-relaxed text-[#6B5446] dark:text-[#BFA99A]">
-                {photo.caption[lang]}
-              </p>
             </figcaption>
           </figure>
         ))}
