@@ -1,6 +1,7 @@
 import { Moon, Sun } from 'lucide-react';
 import { Language, PageId, UI_COPY } from '../data/bakeryData';
 import { BrandLogo } from './BrandLogo';
+import { ScrollProgressBar } from './ScrollProgressBar';
 
 interface HeaderProps {
   lang: Language;
@@ -29,6 +30,7 @@ export function Header({
 }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40 border-b border-[#E6D8C8]/90 dark:border-[#342821] bg-[#FBF7F0]/92 dark:bg-[#17120F]/92 backdrop-blur-md transition-colors duration-200">
+      <ScrollProgressBar lang={lang} activePage={activePage} />
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Primary top bar row */}
         <div className="h-[68px] sm:h-[74px] flex items-center justify-between gap-4">

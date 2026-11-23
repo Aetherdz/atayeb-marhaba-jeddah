@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { BakeryPhoto, Language, UI_COPY } from '../data/bakeryData';
 import { SmartImage } from './SmartImage';
 
@@ -9,6 +9,7 @@ interface LightboxProps {
   lang: Language;
   onClose: () => void;
   onNavigate: (newIndex: number) => void;
+  onGoToProducts: () => void;
 }
 
 export function Lightbox({
@@ -17,6 +18,7 @@ export function Lightbox({
   lang,
   onClose,
   onNavigate,
+  onGoToProducts,
 }: LightboxProps) {
   const isOpen = currentIndex !== null;
 
@@ -49,6 +51,7 @@ export function Lightbox({
   const goPrev = () =>
     onNavigate((currentIndex - 1 + photos.length) % photos.length);
   const goNext = () => onNavigate((currentIndex + 1) % photos.length);
+  const DirectionArrow = lang === 'ar' ? ArrowLeft : ArrowRight;
 
   return (
     <div
@@ -56,11 +59,11 @@ export function Lightbox({
       aria-modal="true"
       aria-label={photo.title[lang]}
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#120D0A]/88 backdrop-blur-sm p-4 sm:p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#120D0A]/88 backdrop-blur-sm p-3 sm:p-6 overflow-y-auto"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-3xl bg-[#FFFDF9] dark:bg-[#211915] rounded-2xl overflow-hidden border border-[#E5D7C6] dark:border-[#3A2D25] shadow-2xl"
+        className="relative w-full max-w-3xl bg-[#FFFDF9] dark:bg-[#211915] rounded-2xl overflow-hidden border border-[#E5D7C6] dark:border-[#3A2D25] shadow-2xl my-auto"
       >
         {/* Top bar */}
         <div className="flex items-center justify-between gap-4 px-5 py-3.5 border-b border-[#EFE3D5] dark:border-[#332720]">
@@ -77,8 +80,8 @@ export function Lightbox({
           </button>
         </div>
 
-        {/* Image frame */}
-        <div className="relative aspect-[4/3] sm:aspect-[16/11] w-full bg-[#EFE5D8] dark:bg-[#191310]">
+        {/* Main Image Frame */}
+        <div className="relative aspect-[4/3] sm:aspect-[16/10] w-full bg-[#EFE5D8] dark:bg-[#191310]">
           <SmartImage src={photo.url} alt={photo.title[lang]} priority />
 
           {/* Prev / Next circular controls */}
@@ -108,9 +111,47 @@ export function Lightbox({
           </button>
         </div>
 
-        {/* Caption */}
-        <div className="px-5 py-4 text-sm sm:text-base text-[#5C473B] dark:text-[#CDBBAE]">
-          {photo.caption[lang]}
+        {/* Caption + In-site Go to Products button */}
+        <div className="px-5 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#EFE3D5] dark:border-[#332720]">
+          <p className="text-sm text-[#5C473B] dark:text-[#CDBBAE] leading-relaxed">
+            {photo.caption[lang]}
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              onGoToProducts();
+            }}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#C85A17] hover:bg-[#AD4B11] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-xs sm:text-sm font-semibold transition-colors whitespace-nowrap shrink-0 self-start sm:self-auto cursor-pointer"
+          >
+            <span>{UI_COPY.actions.goToProducts[lang]}</span>
+            <DirectionArrow className="w-3.5 h-3.5" aria-hidden="true" />
+          </button>
+        </div>
+
+        {/* Thumbnail Strip */}
+        <div className="px-4 py-3 bg-[#F7F0E6] dark:bg-[#1A1310] overflow-x-auto no-scrollbar">
+          <div className="flex items-center gap-2.5">
+            {photos.map((thumb, idx) => {
+              const isSelected = idx === currentIndex;
+              return (
+                <button
+                  key={thumb.id}
+                  type="button"
+                  onClick={() => onNavigate(idx)}
+                  aria-label={thumb.title[lang]}
+                  aria-current={isSelected ? 'true' : undefined}
+                  className={`relative w-16 sm:w-20 aspect-[4/3] rounded-lg overflow-hidden shrink-0 border-2 transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-[#C85A17] ${
+                    isSelected
+                      ? 'border-[#C85A17] dark:border-[#E57A32] opacity-100'
+                      : 'border-transparent opacity-65 hover:opacity-100'
+                  }`}
+                >
+                  <SmartImage src={thumb.url} alt={thumb.title[lang]} />
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

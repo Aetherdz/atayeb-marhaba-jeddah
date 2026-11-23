@@ -8,7 +8,13 @@ import { Header } from './components/Header';
 import { HomeView } from './components/HomeView';
 import { Lightbox } from './components/Lightbox';
 import { ProductsView } from './components/ProductsView';
-import { Language, PageId, PHOTOS, UI_COPY } from './data/bakeryData';
+import {
+  Language,
+  PageId,
+  PHOTOS,
+  ProductCategory,
+  UI_COPY,
+} from './data/bakeryData';
 
 const VALID_PAGES: readonly PageId[] = [
   'home',
@@ -40,6 +46,8 @@ export default function App() {
   const [lang, setLang] = useState<Language>('ar');
   const [darkMode, setDarkMode] = useState<boolean>(getInitialTheme);
   const [activePage, setActivePage] = useState<PageId>(getInitialPage);
+  const [productCategory, setProductCategory] =
+    useState<ProductCategory>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   // Sync HTML dir, lang, and document title when language switches
@@ -73,7 +81,15 @@ export default function App() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  const handleNavigate = (page: PageId) => {
+  const handleNavigate = (
+    page: PageId,
+    nextProductCategory?: ProductCategory
+  ) => {
+    if (page === 'products' && nextProductCategory) {
+      setProductCategory(nextProductCategory);
+    } else if (page === 'products' && !nextProductCategory) {
+      setProductCategory('all');
+    }
     setActivePage(page);
     if (window.location.hash !== `#${page}`) {
       window.history.pushState(null, '', `#${page}`);
@@ -95,7 +111,7 @@ export default function App() {
         lang={lang}
         darkMode={darkMode}
         activePage={activePage}
-        onNavigate={handleNavigate}
+        onNavigate={(page) => handleNavigate(page)}
         onToggleLanguage={handleToggleLanguage}
         onToggleTheme={handleToggleTheme}
       />
@@ -117,13 +133,22 @@ export default function App() {
               />
             )}
             {activePage === 'products' && (
-              <ProductsView lang={lang} onOpenLightbox={setLightboxIndex} />
+              <ProductsView
+                lang={lang}
+                initialCategory={productCategory}
+                onOpenLightbox={setLightboxIndex}
+              />
             )}
             {activePage === 'gallery' && (
               <GalleryView lang={lang} onOpenLightbox={setLightboxIndex} />
             )}
             {activePage === 'branches' && <BranchesView lang={lang} />}
-            {activePage === 'contact' && <ContactView lang={lang} />}
+            {activePage === 'contact' && (
+              <ContactView
+                lang={lang}
+                onNavigate={(page) => handleNavigate(page)}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
       </main>
@@ -136,6 +161,7 @@ export default function App() {
         lang={lang}
         onClose={() => setLightboxIndex(null)}
         onNavigate={setLightboxIndex}
+        onGoToProducts={() => handleNavigate('products', 'all')}
       />
     </div>
   );

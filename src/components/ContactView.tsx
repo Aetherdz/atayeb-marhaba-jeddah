@@ -3,16 +3,19 @@ import {
   DELIVERY_APPS,
   INSTAGRAM_URL,
   Language,
+  PageId,
   UI_COPY,
 } from '../data/bakeryData';
+import { HowToOrderSection } from './HowToOrderSection';
 
 interface ContactViewProps {
   lang: Language;
+  onNavigate: (page: PageId) => void;
 }
 
-export function ContactView({ lang }: ContactViewProps) {
+export function ContactView({ lang, onNavigate }: ContactViewProps) {
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       <div className="max-w-2xl space-y-2.5">
         <h1 className="font-display text-3xl sm:text-4xl font-bold text-[#241914] dark:text-[#F6EDE3]">
           {UI_COPY.contact.pageTitle[lang]}
@@ -21,6 +24,9 @@ export function ContactView({ lang }: ContactViewProps) {
           {UI_COPY.contact.pageSubtitle[lang]}
         </p>
       </div>
+
+      {/* How to Order (3 Real Channels Only) */}
+      <HowToOrderSection lang={lang} onNavigate={onNavigate} />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Primary Contact Card: Instagram */}

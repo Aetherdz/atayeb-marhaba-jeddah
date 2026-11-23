@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Search, X } from 'lucide-react';
 import {
   ADDITIONAL_PRODUCTS,
   FEATURED_PRODUCTS,
@@ -6,10 +7,12 @@ import {
   ProductCategory,
   UI_COPY,
 } from '../data/bakeryData';
+import { LoqmahBoxCard } from './LoqmahBoxCard';
 import { SmartImage } from './SmartImage';
 
 interface ProductsViewProps {
   lang: Language;
+  initialCategory?: ProductCategory;
   onOpenLightbox: (photoIndex: number) => void;
 }
 
@@ -20,21 +23,75 @@ const CATEGORIES: readonly ProductCategory[] = [
   'seasonal',
 ];
 
-export function ProductsView({ lang, onOpenLightbox }: ProductsViewProps) {
+function normalizeText(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[أإآ]/g, 'ا')
+    .replace(/ة/g, 'ه')
+    .replace(/ى/g, 'ي')
+    .replace(/[’']/g, '')
+    .trim();
+}
+
+export function ProductsView({
+  lang,
+  initialCategory = 'all',
+  onOpenLightbox,
+}: ProductsViewProps) {
   const [selectedCategory, setSelectedCategory] =
-    useState<ProductCategory>('all');
+    useState<ProductCategory>(initialCategory);
+  const [query, setQuery] = useState('');
 
-  const visibleFeatured = FEATURED_PRODUCTS.filter(
-    (item) => selectedCategory === 'all' || item.category === selectedCategory
-  );
+  useEffect(() => {
+    setSelectedCategory(initialCategory);
+  }, [initialCategory]);
 
-  const visibleAdditional = ADDITIONAL_PRODUCTS.filter(
-    (item) => selectedCategory === 'all' || item.category === selectedCategory
-  );
+  const normalizedQuery = normalizeText(query);
+
+  const matchesSearch = (parts: string[]): boolean => {
+    if (!normalizedQuery) return true;
+    return parts.some((part) => normalizeText(part).includes(normalizedQuery));
+  };
+
+  const visibleFeatured = FEATURED_PRODUCTS.filter((item) => {
+    const matchesCategory =
+      selectedCategory === 'all' || item.category === selectedCategory;
+    if (!matchesCategory) return false;
+    const searchable = [
+      item.name.ar,
+      item.name.en,
+      item.description.ar,
+      item.description.en,
+      ...(item.varieties?.ar ?? []),
+      ...(item.varieties?.en ?? []),
+    ];
+    return matchesSearch(searchable);
+  });
+
+  const visibleAdditional = ADDITIONAL_PRODUCTS.filter((item) => {
+    const matchesCategory =
+      selectedCategory === 'all' || item.category === selectedCategory;
+    if (!matchesCategory) return false;
+    const searchable = [
+      item.name.ar,
+      item.name.en,
+      item.description.ar,
+      item.description.en,
+    ];
+    return matchesSearch(searchable);
+  });
+
+  const hasResults =
+    visibleFeatured.length > 0 || visibleAdditional.length > 0;
+
+  const handleReset = () => {
+    setQuery('');
+    setSelectedCategory('all');
+  };
 
   return (
     <div className="space-y-12">
-      {/* Page header + interactive filter tabs */}
+      {/* Page header + real-time search & category filter tabs */}
       <div className="space-y-6">
         <div className="max-w-3xl space-y-2.5">
           <h1 className="font-display text-3xl sm:text-4xl font-bold text-[#241914] dark:text-[#F6EDE3]">
@@ -45,33 +102,76 @@ export function ProductsView({ lang, onOpenLightbox }: ProductsViewProps) {
           </p>
         </div>
 
-        {/* Category segmented filter bar */}
-        <div
-          role="tablist"
-          aria-label={UI_COPY.products.pageTitle[lang]}
-          className="inline-flex flex-wrap items-center gap-1.5 p-1.5 rounded-full bg-[#F1E7DA] dark:bg-[#231B16] border border-[#E5D7C6] dark:border-[#362A22]"
-        >
-          {CATEGORIES.map((category) => {
-            const isSelected = selectedCategory === category;
-            return (
+        {/* Search + Category filter controls working together */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div
+            role="tablist"
+            aria-label={UI_COPY.products.pageTitle[lang]}
+            className="inline-flex flex-wrap items-center gap-1.5 p-1.5 rounded-full bg-[#F1E7DA] dark:bg-[#231B16] border border-[#E5D7C6] dark:border-[#362A22] self-start"
+          >
+            {CATEGORIES.map((category) => {
+              const isSelected = selectedCategory === category;
+              return (
+                <button
+                  key={category}
+                  role="tab"
+                  type="button"
+                  aria-selected={isSelected}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C85A17] dark:focus-visible:outline-[#E57A32] ${
+                    isSelected
+                      ? 'bg-[#C85A17] text-[#FFFDF9] dark:bg-[#E57A32] dark:text-[#17120F]'
+                      : 'text-[#5C473B] dark:text-[#CDBBAE] hover:text-[#241914] dark:hover:text-[#F6EDE3]'
+                  }`}
+                >
+                  {UI_COPY.products.filters[category][lang]}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="relative w-full lg:max-w-sm">
+            <Search
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 -translate-y-1/2 start-3.5 w-4 h-4 text-[#8A7162] dark:text-[#A99282]"
+            />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={UI_COPY.products.searchPlaceholder[lang]}
+              aria-label={UI_COPY.products.searchPlaceholder[lang]}
+              className="w-full ps-10 pe-10 py-2.5 rounded-full bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E4D5C3] dark:border-[#3A2D25] text-sm text-[#241914] dark:text-[#F6EDE3] placeholder:text-[#8A7162] dark:placeholder:text-[#9C8677] focus:outline-none focus:border-[#C85A17] dark:focus:border-[#E57A32] transition-colors"
+            />
+            {query && (
               <button
-                key={category}
-                role="tab"
                 type="button"
-                aria-selected={isSelected}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C85A17] dark:focus-visible:outline-[#E57A32] ${
-                  isSelected
-                    ? 'bg-[#C85A17] text-[#FFFDF9] dark:bg-[#E57A32] dark:text-[#17120F]'
-                    : 'text-[#5C473B] dark:text-[#CDBBAE] hover:text-[#241914] dark:hover:text-[#F6EDE3]'
-                }`}
+                onClick={() => setQuery('')}
+                aria-label={UI_COPY.actions.clearSearch[lang]}
+                className="absolute top-1/2 -translate-y-1/2 end-2.5 w-7 h-7 rounded-full flex items-center justify-center text-[#7D6759] dark:text-[#B5A090] hover:bg-[#F1E7DA] dark:hover:bg-[#31261F] transition-colors cursor-pointer"
               >
-                {UI_COPY.products.filters[category][lang]}
+                <X className="w-3.5 h-3.5" aria-hidden="true" />
               </button>
-            );
-          })}
+            )}
+          </div>
         </div>
       </div>
+
+      {/* Empty state if search + filter returns nothing */}
+      {!hasResults && (
+        <div className="p-8 rounded-2xl bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22] text-center space-y-4">
+          <p className="text-base font-medium text-[#5C473B] dark:text-[#CDBBAE]">
+            {UI_COPY.products.noResults[lang]}
+          </p>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="px-5 py-2 rounded-full bg-[#C85A17] hover:bg-[#AD4B11] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-sm font-semibold transition-colors cursor-pointer"
+          >
+            {UI_COPY.actions.resetFilters[lang]}
+          </button>
+        </div>
+      )}
 
       {/* Photographed Products Grid */}
       {visibleFeatured.length > 0 && (
@@ -152,6 +252,9 @@ export function ProductsView({ lang, onOpenLightbox }: ProductsViewProps) {
           </div>
         </section>
       )}
+
+      {/* Interactive Loqmah Box Card */}
+      <LoqmahBoxCard lang={lang} />
     </div>
   );
 }
