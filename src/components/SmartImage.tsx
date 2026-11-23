@@ -5,6 +5,8 @@ interface SmartImageProps {
   src: string;
   alt: string;
   className?: string;
+  containerClassName?: string;
+  fit?: 'cover' | 'contain';
   priority?: boolean;
 }
 
@@ -20,6 +22,8 @@ export function SmartImage({
   src,
   alt,
   className = '',
+  containerClassName = '',
+  fit = 'cover',
   priority = false,
 }: SmartImageProps) {
   const resolvedSrc = normalizeImageUrl(src);
@@ -37,8 +41,12 @@ export function SmartImage({
     }
   }, [resolvedSrc]);
 
+  const fitClass = fit === 'contain' ? 'object-contain' : 'object-cover';
+
   return (
-    <div className="relative w-full h-full overflow-hidden bg-[#EFE5D8] dark:bg-[#281F1A]">
+    <div
+      className={`relative w-full h-full overflow-hidden bg-[#F2E8DC] dark:bg-[#261D18] ${containerClassName}`}
+    >
       {!failed ? (
         <img
           ref={imgRef}
@@ -48,7 +56,7 @@ export function SmartImage({
           decoding={priority ? 'sync' : 'async'}
           onLoad={() => setLoaded(true)}
           onError={() => setFailed(true)}
-          className={`w-full h-full object-cover transition-opacity duration-300 ${
+          className={`w-full h-full ${fitClass} transition-opacity duration-300 ${
             loaded ? 'opacity-100' : 'opacity-0'
           } ${className}`}
         />
@@ -57,7 +65,7 @@ export function SmartImage({
           <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#C85A17]/15 text-[#9B4310] dark:bg-[#E57A32]/20 dark:text-[#E57A32]">
             <Croissant className="w-6 h-6" strokeWidth={1.75} aria-hidden="true" />
           </div>
-          <span className="font-display text-sm font-semibold text-[#3C291E] dark:text-[#EADACE]">
+          <span className="font-display text-sm font-semibold text-[#2C1E17] dark:text-[#F4EAE0]">
             {alt}
           </span>
         </div>

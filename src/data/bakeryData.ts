@@ -12,6 +12,16 @@ export type BranchRoadFilter =
   | 'king-abdulaziz'
   | 'prince-mohammed';
 
+export type BranchDistrictFilter =
+  | 'all'
+  | 'al-rawdah'
+  | 'al-marwah'
+  | 'al-khalidiyyah'
+  | 'al-hamra'
+  | 'al-salamah'
+  | 'al-safa'
+  | 'abhur-al-janubiyah';
+
 export interface BakeryPhoto {
   id: string;
   url: string;
@@ -19,15 +29,18 @@ export interface BakeryPhoto {
   title: Record<Language, string>;
   caption: Record<Language, string>;
   productId: string;
+  postUrl?: string;
 }
 
 export interface FeaturedProduct {
   id: string;
   category: Exclude<ProductCategory, 'all'>;
   imageUrl: string;
+  objectPosition: string;
   name: Record<Language, string>;
   description: Record<Language, string>;
   varieties?: Record<Language, string[]>;
+  searchTerms?: Record<Language, string[]>;
 }
 
 export interface AdditionalProduct {
@@ -143,6 +156,14 @@ export function getGoogleMapsSearchUrl(address: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
+export function getGoogleMapsEmbedUrl(
+  districtEn: string,
+  address: string
+): string {
+  const query = `Atayeb Marhaba ${districtEn}, ${address}`;
+  return `https://maps.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
+}
+
 export const MANKOUSHEH_VARIETIES: readonly MankoushehVariety[] = [
   { id: 'zaatar', label: { ar: 'زعتر', en: 'Za’atar' } },
   { id: 'meat', label: { ar: 'لحم', en: 'Meat' } },
@@ -164,6 +185,7 @@ export const PHOTOS: readonly BakeryPhoto[] = [
       en: 'Delicate layers steeped in fine coffee and rich bitter cocoa',
     },
     productId: 'tiramisu',
+    postUrl: 'https://www.instagram.com/p/DgDdvfuu1hK/',
   },
   {
     id: 'loqmah-box',
@@ -178,6 +200,7 @@ export const PHOTOS: readonly BakeryPhoto[] = [
       en: 'An assorted mini mankousheh box with your choice of varieties',
     },
     productId: 'loqmah-box',
+    postUrl: 'https://www.instagram.com/p/DgC9YvRODHs/',
   },
   {
     id: 'lahm-bi-ajeen',
@@ -243,6 +266,7 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
     category: 'sweets',
     imageUrl:
       'https://images.weserv.nl/?url=www.instagram.com/p/DgDdvfuu1hK/media/?size=l&output=jpg',
+    objectPosition: 'object-[50%_68%]',
     name: {
       ar: 'تيراميسو',
       en: 'Tiramisu',
@@ -261,6 +285,7 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
     category: 'savory',
     imageUrl:
       'https://images.weserv.nl/?url=www.instagram.com/p/DgC9YvRODHs/media/?size=l&output=jpg',
+    objectPosition: 'object-[50%_66%]',
     name: {
       ar: 'بوكس اللقمة',
       en: 'Loqmah Box',
@@ -279,6 +304,7 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
     category: 'savory',
     imageUrl:
       'https://images.weserv.nl/?url=www.instagram.com/p/DgBfYoDt48i/media/?size=l&output=jpg',
+    objectPosition: 'object-[50%_64%]',
     name: {
       ar: 'مناقيش',
       en: 'Mankousheh',
@@ -297,6 +323,7 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
     category: 'sweets',
     imageUrl:
       'https://images.weserv.nl/?url=www.instagram.com/p/DgAyj3JurXW/media/?size=l&output=jpg',
+    objectPosition: 'object-[50%_62%]',
     name: {
       ar: 'كيك أنيق',
       en: 'Elegant Cakes',
@@ -305,7 +332,7 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
       ar: 'تشكيلة كيك أنيق وحلويات منوعة.',
       en: 'A curated selection of elegant cakes.',
     },
-    varieties: {
+    searchTerms: {
       ar: [
         'كيكة بلاك فورست',
         'كيكة وايت فورست',
@@ -327,6 +354,7 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
     category: 'savory',
     imageUrl:
       'https://images.weserv.nl/?url=www.instagram.com/p/Df9rjv3Optx/media/?size=l&output=jpg',
+    objectPosition: 'object-[50%_62%]',
     name: {
       ar: 'خبز الساوردو بالبذور',
       en: 'Seeded Sourdough Bread',
@@ -341,6 +369,7 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
     category: 'savory',
     imageUrl:
       'https://images.weserv.nl/?url=www.instagram.com/p/Df8FsHHurVV/media/?size=l&output=jpg',
+    objectPosition: 'object-[50%_66%]',
     name: {
       ar: 'باتون ساليه',
       en: 'Baton Salé',
@@ -521,6 +550,10 @@ export const UI_COPY = {
     switchToEn: 'Switch to English',
     switchToAr: 'التبديل إلى العربية',
     toggleTheme: { ar: 'تبديل المظهر', en: 'Toggle theme' },
+    switchToDark: { ar: 'التبديل إلى الوضع الداكن', en: 'Switch to dark mode' },
+    switchToLight: { ar: 'التبديل إلى الوضع الفاتح', en: 'Switch to light mode' },
+    themeDarkLabel: { ar: 'داكن', en: 'Dark' },
+    themeLightLabel: { ar: 'فاتح', en: 'Light' },
     viewAllProducts: { ar: 'تصفح جميع المنتجات', en: 'Explore all products' },
     viewGallery: { ar: 'عرض المعرض', en: 'View gallery' },
     viewBranches: { ar: 'فروع جدة', en: 'Jeddah Branches' },
@@ -529,11 +562,17 @@ export const UI_COPY = {
     copied: { ar: 'تم النسخ', en: 'Copied' },
     clearSearch: { ar: 'مسح البحث', en: 'Clear search' },
     resetFilters: { ar: 'إعادة ضبط التصفية', en: 'Reset filters' },
+    orderOnInstagram: { ar: 'اطلب عبر إنستغرام', en: 'Order on Instagram' },
     instagramCta: { ar: 'راسلنا على إنستغرام', en: 'Message us on Instagram' },
+    originalPost: { ar: 'المنشور الأصلي', en: 'Original post' },
     close: { ar: 'إغلاق', en: 'Close' },
     next: { ar: 'التالي', en: 'Next' },
     previous: { ar: 'السابق', en: 'Previous' },
     goToProducts: { ar: 'الانتقال إلى المنتجات', en: 'Go to Products' },
+  },
+  pricingNote: {
+    ar: 'تُؤكَّد الأسعار وتفاصيل الطلب عبر رسائل إنستغرام أو في تطبيقات التوصيل.',
+    en: 'Prices and order details are confirmed via Instagram messages or in delivery apps.',
   },
   home: {
     heroLine1: { ar: 'اطايب مرحبا', en: 'Atayeb Marhaba' },
@@ -550,6 +589,7 @@ export const UI_COPY = {
       en: 'Select any photo to preview it above',
     },
     categoriesTitle: { ar: 'الأقسام', en: 'Categories' },
+    browseCategoryPrefix: { ar: 'تصفح قسم', en: 'Browse category' },
     quotesTitle: { ar: 'من حسابنا على إنستغرام', en: 'From Our Instagram' },
     originalPostLink: { ar: 'من المنشور الأصلي', en: 'From the original post' },
     productsHeading: { ar: 'منتجاتنا', en: 'Our Products' },
@@ -628,8 +668,8 @@ export const UI_COPY = {
   gallery: {
     pageTitle: { ar: 'المعرض', en: 'Gallery' },
     pageSubtitle: {
-      ar: 'صور حقيقية من أصناف اطايب مرحبا في جدة.',
-      en: 'Authentic photography of Atayeb Marhaba creations in Jeddah.',
+      ar: 'صور من حسابنا على إنستغرام.',
+      en: 'Photos from our Instagram account.',
     },
     filters: {
       all: { ar: 'الكل', en: 'All' },
@@ -640,8 +680,8 @@ export const UI_COPY = {
   branches: {
     pageTitle: { ar: 'فروع جدة', en: 'Jeddah Branches' },
     pageSubtitle: {
-      ar: 'ابحث بالحي أو الطريق، وانسخ العنوان أو افتحه مباشرة في خرائط Google.',
-      en: 'Search by district or road, copy any address, or open it directly in Google Maps.',
+      ar: 'اختر الحي أو ابحث بالعنوان، وافتح تفاصيل الفرع وخريطته أو انسخ العنوان مباشرة.',
+      en: 'Filter by district or search by address, open any branch for its map and details, or copy the address.',
     },
     searchPlaceholder: {
       ar: 'ابحث بالحي أو الطريق (مثل: الروضة، السلامة، Prince Sultan...)',
@@ -651,8 +691,16 @@ export const UI_COPY = {
       ar: 'لا توجد عناوين مطابقة لبحثك الحالي.',
       en: 'No addresses match your current search.',
     },
+    districtFilterLabel: { ar: 'تصفية حسب الحي', en: 'Filter by district' },
+    allDistricts: { ar: 'جميع الأحياء', en: 'All Districts' },
+    roadFilterLabel: { ar: 'تصفية حسب الطريق', en: 'Filter by road' },
+    viewDetails: { ar: 'التفاصيل والخريطة', en: 'Details & Map' },
+    hideDetails: { ar: 'إخفاء التفاصيل', en: 'Hide Details' },
+    districtLabel: { ar: 'الحي', en: 'District' },
+    fullAddressLabel: { ar: 'العنوان الكامل', en: 'Full Address' },
+    mapTitlePrefix: { ar: 'خريطة موقع اطايب مرحبا —', en: 'Map of Atayeb Marhaba —' },
     roadFilters: {
-      all: { ar: 'الكل', en: 'All' },
+      all: { ar: 'جميع الطرق', en: 'All Roads' },
       'prince-sultan': { ar: 'طريق الأمير سلطان', en: 'Prince Sultan Rd' },
       'king-abdulaziz': { ar: 'طريق الملك عبدالعزيز', en: 'King Abdulaziz Rd' },
       'prince-mohammed': {

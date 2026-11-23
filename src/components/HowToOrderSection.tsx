@@ -30,12 +30,12 @@ export function HowToOrderSection({
       <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x rtl:md:divide-x-reverse divide-[#EFE3D5] dark:divide-[#332720]">
         {/* Path 1: Delivery Apps (names only, no links) */}
         <div className="py-4 first:pt-0 md:py-1 md:pe-6 flex flex-col justify-between gap-2">
-          <span className="text-xs font-semibold text-[#6B5446] dark:text-[#BFA99A]">
+          <span className="text-sm font-semibold text-[#4A372C] dark:text-[#DFD0C3]">
             {UI_COPY.howToOrder.step1Title[lang]}
           </span>
           <p
             dir="ltr"
-            className={`text-sm font-semibold text-[#241914] dark:text-[#F6EDE3] leading-relaxed ${
+            className={`text-base font-semibold text-[#241914] dark:text-[#F6EDE3] leading-relaxed ${
               lang === 'ar' ? 'text-right' : 'text-left'
             }`}
           >
@@ -45,24 +45,24 @@ export function HowToOrderSection({
 
         {/* Path 2: Jeddah Branches via Google Maps */}
         <div className="py-4 md:py-1 md:px-6 flex flex-col justify-between gap-2">
-          <span className="text-xs font-semibold text-[#6B5446] dark:text-[#BFA99A]">
+          <span className="text-sm font-semibold text-[#4A372C] dark:text-[#DFD0C3]">
             {UI_COPY.howToOrder.step2Title[lang]}
           </span>
           <div>
             <button
               type="button"
               onClick={() => onNavigate('branches')}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#241914] dark:text-[#F6EDE3] underline decoration-[#C9B39E] dark:decoration-[#665143] underline-offset-4 hover:decoration-[#241914] dark:hover:decoration-[#F6EDE3] transition-colors cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
+              className="min-h-[44px] inline-flex items-center gap-1.5 text-base font-semibold text-[#241914] dark:text-[#F6EDE3] underline decoration-[#8D7463] dark:decoration-[#9C8474] underline-offset-4 hover:decoration-[#241914] dark:hover:decoration-[#F6EDE3] transition-colors cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
             >
               <span>{UI_COPY.howToOrder.step2Desc[lang]}</span>
-              <DirectionArrow className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+              <DirectionArrow className="w-4 h-4 shrink-0" aria-hidden="true" />
             </button>
           </div>
         </div>
 
         {/* Path 3: Instagram Messaging */}
         <div className="py-4 last:pb-0 md:py-1 md:ps-6 flex flex-col justify-between gap-2">
-          <span className="text-xs font-semibold text-[#6B5446] dark:text-[#BFA99A]">
+          <span className="text-sm font-semibold text-[#4A372C] dark:text-[#DFD0C3]">
             {UI_COPY.howToOrder.step3Title[lang]}
           </span>
           <div>
@@ -70,13 +70,13 @@ export function HowToOrderSection({
               href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#241914] dark:text-[#F6EDE3] underline decoration-[#C9B39E] dark:decoration-[#665143] underline-offset-4 hover:decoration-[#241914] dark:hover:decoration-[#F6EDE3] transition-colors rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
+              className="min-h-[44px] inline-flex flex-wrap items-center gap-1.5 text-base font-semibold text-[#241914] dark:text-[#F6EDE3] underline decoration-[#8D7463] dark:decoration-[#9C8474] underline-offset-4 hover:decoration-[#241914] dark:hover:decoration-[#F6EDE3] transition-colors rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
             >
-              <span>{UI_COPY.actions.instagramCta[lang]}</span>
-              <span dir="ltr" className="text-xs text-[#6B5446] dark:text-[#BFA99A]">
+              <span>{UI_COPY.actions.orderOnInstagram[lang]}</span>
+              <span dir="ltr" className="text-sm text-[#4A372C] dark:text-[#DFD0C3]">
                 (@atayeb_marhaba)
               </span>
-              <ExternalLink className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+              <ExternalLink className="w-4 h-4 shrink-0" aria-hidden="true" />
             </a>
           </div>
         </div>

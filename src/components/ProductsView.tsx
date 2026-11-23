@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Search, X } from 'lucide-react';
+import { ExternalLink, Instagram, Search, X } from 'lucide-react';
 import {
   ADDITIONAL_PRODUCTS,
   FEATURED_PRODUCTS,
+  INSTAGRAM_URL,
   Language,
   ProductCategory,
   UI_COPY,
@@ -59,10 +60,10 @@ export function ProductsView({
     const searchable = [
       item.name.ar,
       item.name.en,
-      item.description.ar,
-      item.description.en,
       ...(item.varieties?.ar ?? []),
       ...(item.varieties?.en ?? []),
+      ...(item.searchTerms?.ar ?? []),
+      ...(item.searchTerms?.en ?? []),
     ];
     return matchesSearch(searchable);
   });
@@ -71,12 +72,7 @@ export function ProductsView({
     const matchesCategory =
       selectedCategory === 'all' || item.category === selectedCategory;
     if (!matchesCategory) return false;
-    const searchable = [
-      item.name.ar,
-      item.name.en,
-      item.description.ar,
-      item.description.en,
-    ];
+    const searchable = [item.name.ar, item.name.en];
     return matchesSearch(searchable);
   });
 
@@ -90,14 +86,17 @@ export function ProductsView({
 
   return (
     <div className="space-y-12">
-      {/* Page header + real-time search & category filter tabs */}
+      {/* Page header + Pricing Confirmation Note + Search & Category Tabs */}
       <div className="space-y-6">
-        <div className="max-w-3xl space-y-2.5">
+        <div className="max-w-3xl space-y-3">
           <h1 className="font-display text-3xl sm:text-4xl font-bold text-[#241914] dark:text-[#F6EDE3]">
             {UI_COPY.products.pageTitle[lang]}
           </h1>
-          <p className="text-sm sm:text-base leading-relaxed text-[#6B5446] dark:text-[#BFA99A]">
+          <p className="text-base sm:text-[17px] leading-relaxed text-[#4A372C] dark:text-[#DFD0C3]">
             {UI_COPY.products.pageSubtitle[lang]}
+          </p>
+          <p className="text-base sm:text-[17px] font-medium leading-relaxed text-[#241914] dark:text-[#F6EDE3]">
+            {UI_COPY.pricingNote[lang]}
           </p>
         </div>
 
@@ -106,7 +105,7 @@ export function ProductsView({
           <div
             role="tablist"
             aria-label={UI_COPY.products.pageTitle[lang]}
-            className="inline-flex flex-wrap items-center gap-1.5 p-1.5 rounded-full bg-[#F1E7DA] dark:bg-[#231B16] border border-[#E5D7C6] dark:border-[#362A22] self-start"
+            className="inline-flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl sm:rounded-full bg-[#F1E7DA] dark:bg-[#231B16] border border-[#DFCEBC] dark:border-[#3E3028] self-start"
           >
             {CATEGORIES.map((category) => {
               const isSelected = selectedCategory === category;
@@ -117,10 +116,10 @@ export function ProductsView({
                   type="button"
                   aria-selected={isSelected}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] ${
+                  className={`min-h-[44px] px-4 rounded-full text-sm sm:text-[15px] font-semibold transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] ${
                     isSelected
-                      ? 'bg-[#2C1C14] text-[#FFFDF9] dark:bg-[#F4EAE0] dark:text-[#17120F]'
-                      : 'text-[#5C473B] dark:text-[#CDBBAE] hover:text-[#241914] dark:hover:text-[#F6EDE3]'
+                      ? 'bg-[#241914] text-[#FFFDF9] dark:bg-[#F6EDE3] dark:text-[#17120F]'
+                      : 'text-[#3D2B21] dark:text-[#E5D7CA] hover:text-[#241914] dark:hover:text-[#FFFDF9]'
                   }`}
                 >
                   {UI_COPY.products.filters[category][lang]}
@@ -132,7 +131,7 @@ export function ProductsView({
           <div className="relative w-full lg:max-w-sm">
             <Search
               aria-hidden="true"
-              className="pointer-events-none absolute top-1/2 -translate-y-1/2 start-3.5 w-4 h-4 text-[#7D6759] dark:text-[#A99282]"
+              className="pointer-events-none absolute top-1/2 -translate-y-1/2 start-4 w-4 h-4 text-[#4A372C] dark:text-[#DFD0C3]"
             />
             <input
               type="search"
@@ -140,16 +139,16 @@ export function ProductsView({
               onChange={(e) => setQuery(e.target.value)}
               placeholder={UI_COPY.products.searchPlaceholder[lang]}
               aria-label={UI_COPY.products.searchPlaceholder[lang]}
-              className="w-full ps-10 pe-10 py-2.5 rounded-full bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E4D5C3] dark:border-[#3A2D25] text-sm text-[#241914] dark:text-[#F6EDE3] placeholder:text-[#7D6759] dark:placeholder:text-[#9C8677] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] transition-colors"
+              className="w-full min-h-[46px] ps-11 pe-11 py-2.5 rounded-full bg-[#FFFDF9] dark:bg-[#221A16] border border-[#D8C6B2] dark:border-[#493A30] text-base text-[#241914] dark:text-[#F6EDE3] placeholder:text-[#5A4437] dark:placeholder:text-[#CBB9AA] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] transition-colors"
             />
             {query && (
               <button
                 type="button"
                 onClick={() => setQuery('')}
                 aria-label={UI_COPY.actions.clearSearch[lang]}
-                className="absolute top-1/2 -translate-y-1/2 end-2.5 w-7 h-7 rounded-full flex items-center justify-center text-[#5C473B] dark:text-[#CDBBAE] hover:bg-[#F1E7DA] dark:hover:bg-[#31261F] transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
+                className="absolute top-1/2 -translate-y-1/2 end-2 w-9 h-9 rounded-full flex items-center justify-center text-[#3D2B21] dark:text-[#E5D7CA] hover:bg-[#F1E7DA] dark:hover:bg-[#31261F] transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
               >
-                <X className="w-3.5 h-3.5" aria-hidden="true" />
+                <X className="w-4 h-4" aria-hidden="true" />
               </button>
             )}
           </div>
@@ -158,21 +157,21 @@ export function ProductsView({
 
       {/* Empty state if search + filter returns nothing */}
       {!hasResults && (
-        <div className="p-8 rounded-2xl bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22] text-center space-y-4">
-          <p className="text-base font-medium text-[#5C473B] dark:text-[#CDBBAE]">
+        <div className="p-8 rounded-2xl bg-[#FFFDF9] dark:bg-[#221A16] border border-[#DFCEBC] dark:border-[#3E3028] text-center space-y-4">
+          <p className="text-base sm:text-[17px] font-medium text-[#3D2B21] dark:text-[#E5D7CA]">
             {UI_COPY.products.noResults[lang]}
           </p>
           <button
             type="button"
             onClick={handleReset}
-            className="px-5 py-2.5 rounded-full bg-[#B2480B] hover:bg-[#963B08] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-sm font-semibold transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
+            className="min-h-[46px] px-6 rounded-full bg-[#A84208] hover:bg-[#8E3706] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-base font-semibold transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
           >
             {UI_COPY.actions.resetFilters[lang]}
           </button>
         </div>
       )}
 
-      {/* Asymmetric Editorial Photographed Products Grid */}
+      {/* Uniform Photographed Products Grid (Unified 4:3 Food-Focused Crop, Name + Verified Tags + Order CTA Only) */}
       {visibleFeatured.length > 0 && (
         <section aria-label={UI_COPY.products.pageTitle[lang]}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -180,51 +179,55 @@ export function ProductsView({
               const originalIndex = FEATURED_PRODUCTS.findIndex(
                 (p) => p.id === product.id
               );
-              const isWideFeatured =
-                visibleFeatured.length > 1 &&
-                (product.id === 'tiramisu' ||
-                  product.id === 'elegant-cakes' ||
-                  product.id === 'baton-sale');
 
               return (
                 <article
                   key={product.id}
-                  className={`group rounded-2xl overflow-hidden bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22] transition-transform duration-200 hover:-translate-y-0.5 flex flex-col ${
-                    isWideFeatured ? 'lg:col-span-2 lg:flex-row' : ''
-                  }`}
+                  className="group rounded-2xl overflow-hidden bg-[#FFFDF9] dark:bg-[#221A16] border border-[#DFCEBC] dark:border-[#3E3028] flex flex-col"
                 >
                   <button
                     type="button"
                     onClick={() => onOpenLightbox(originalIndex)}
                     aria-label={product.name[lang]}
-                    className={`relative overflow-hidden block cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] ${
-                      isWideFeatured
-                        ? 'aspect-[4/3] lg:aspect-auto lg:w-[56%] lg:min-h-[300px] shrink-0'
-                        : 'aspect-[4/3] w-full'
-                    }`}
+                    className="relative aspect-[4/3] w-full overflow-hidden block bg-[#F2E8DC] dark:bg-[#261D18] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
                   >
                     <SmartImage
                       src={product.imageUrl}
                       alt={product.name[lang]}
-                      className="transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+                      className={`${product.objectPosition} transition-transform duration-300 ease-out group-hover:scale-[1.03]`}
                     />
                   </button>
 
-                  <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between gap-4">
-                    <div>
-                      <h2 className="font-display text-lg sm:text-xl font-bold text-[#241914] dark:text-[#F6EDE3]">
+                  <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between gap-5">
+                    <div className="space-y-3.5">
+                      <h2 className="font-display text-xl font-bold text-[#241914] dark:text-[#F6EDE3]">
                         {product.name[lang]}
                       </h2>
-                      <p className="mt-2 text-sm sm:text-[15px] leading-relaxed text-[#5C473B] dark:text-[#CDBBAE]">
-                        {product.description[lang]}
-                      </p>
+
+                      {product.varieties && product.varieties[lang].length > 0 && (
+                        <ul className="flex flex-wrap gap-2" aria-label={product.name[lang]}>
+                          {product.varieties[lang].map((tag) => (
+                            <li
+                              key={tag}
+                              className="px-3 py-1 rounded-lg bg-[#F3E9DC] dark:bg-[#2E231D] border border-[#DFCEBC] dark:border-[#493A30] text-sm font-semibold text-[#241914] dark:text-[#F6EDE3]"
+                            >
+                              {tag}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
 
-                    {product.varieties && (
-                      <div className="pt-3.5 border-t border-[#F0E5D8] dark:border-[#332720] text-xs sm:text-sm font-medium text-[#6B5446] dark:text-[#BFA99A] leading-relaxed">
-                        {product.varieties[lang].join(' · ')}
-                      </div>
-                    )}
+                    <a
+                      href={INSTAGRAM_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="min-h-[46px] w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#A84208] hover:bg-[#8E3706] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-[15px] font-bold transition-colors whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
+                    >
+                      <Instagram className="w-4 h-4 shrink-0" aria-hidden="true" />
+                      <span>{UI_COPY.actions.orderOnInstagram[lang]}</span>
+                      <ExternalLink className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                    </a>
                   </div>
                 </article>
               );
@@ -233,28 +236,39 @@ export function ProductsView({
         </section>
       )}
 
-      {/* Non-photographed Verified Bakery Items (Name Only) */}
+      {/* Non-photographed Verified Bakery Items (Name + Order CTA) */}
       {visibleAdditional.length > 0 && (
         <section
           aria-labelledby="more-products-heading"
-          className="pt-4 border-t border-[#E6D8C8] dark:border-[#332720]"
+          className="pt-6 border-t border-[#DFCEBC] dark:border-[#3E3028]"
         >
           <h2
             id="more-products-heading"
-            className="font-display text-xl sm:text-2xl font-bold text-[#241914] dark:text-[#F6EDE3] mb-5"
+            className="font-display text-2xl font-bold text-[#241914] dark:text-[#F6EDE3] mb-5"
           >
             {UI_COPY.products.moreHeading[lang]}
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {visibleAdditional.map((item) => (
               <article
                 key={item.id}
-                className="p-5 rounded-2xl bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22]"
+                className="p-5 sm:p-6 rounded-2xl bg-[#FFFDF9] dark:bg-[#221A16] border border-[#DFCEBC] dark:border-[#3E3028] flex flex-col justify-between gap-4"
               >
-                <h3 className="font-display text-base sm:text-lg font-bold text-[#241914] dark:text-[#F6EDE3]">
+                <h3 className="font-display text-lg font-bold text-[#241914] dark:text-[#F6EDE3]">
                   {item.name[lang]}
                 </h3>
+
+                <a
+                  href={INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="min-h-[44px] inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full border border-[#D8C6B2] dark:border-[#4A3A2F] bg-[#F4ECE1] hover:bg-[#EAE0D1] dark:bg-[#2D221C] dark:hover:bg-[#382B23] text-[#241914] dark:text-[#F6EDE3] text-sm font-bold transition-colors whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
+                >
+                  <Instagram className="w-4 h-4 shrink-0" aria-hidden="true" />
+                  <span>{UI_COPY.actions.orderOnInstagram[lang]}</span>
+                  <ExternalLink className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                </a>
               </article>
             ))}
           </div>

@@ -38,7 +38,7 @@ export function GalleryView({ lang, onOpenLightbox }: GalleryViewProps) {
           <h1 className="font-display text-3xl sm:text-4xl font-bold text-[#241914] dark:text-[#F6EDE3]">
             {UI_COPY.gallery.pageTitle[lang]}
           </h1>
-          <p className="text-sm sm:text-base leading-relaxed text-[#6B5446] dark:text-[#BFA99A]">
+          <p className="text-base sm:text-[17px] leading-relaxed text-[#4A372C] dark:text-[#DFD0C3]">
             {UI_COPY.gallery.pageSubtitle[lang]}
           </p>
         </div>
@@ -47,7 +47,7 @@ export function GalleryView({ lang, onOpenLightbox }: GalleryViewProps) {
         <div
           role="tablist"
           aria-label={UI_COPY.gallery.pageTitle[lang]}
-          className="inline-flex flex-wrap items-center gap-1.5 p-1.5 rounded-full bg-[#F1E7DA] dark:bg-[#231B16] border border-[#E5D7C6] dark:border-[#362A22]"
+          className="inline-flex flex-wrap items-center gap-1.5 p-1.5 rounded-full bg-[#F1E7DA] dark:bg-[#231B16] border border-[#DFCEBC] dark:border-[#3E3028]"
         >
           {GALLERY_CATEGORIES.map((category) => {
             const isSelected = selectedCategory === category;
@@ -58,10 +58,10 @@ export function GalleryView({ lang, onOpenLightbox }: GalleryViewProps) {
                 type="button"
                 aria-selected={isSelected}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] ${
+                className={`min-h-[44px] px-4 rounded-full text-sm sm:text-[15px] font-semibold transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] ${
                   isSelected
-                    ? 'bg-[#2C1C14] text-[#FFFDF9] dark:bg-[#F4EAE0] dark:text-[#17120F]'
-                    : 'text-[#5C473B] dark:text-[#CDBBAE] hover:text-[#241914] dark:hover:text-[#F6EDE3]'
+                    ? 'bg-[#241914] text-[#FFFDF9] dark:bg-[#F6EDE3] dark:text-[#17120F]'
+                    : 'text-[#3D2B21] dark:text-[#E5D7CA] hover:text-[#241914] dark:hover:text-[#FFFDF9]'
                 }`}
               >
                 {UI_COPY.gallery.filters[category][lang]}
@@ -71,34 +71,31 @@ export function GalleryView({ lang, onOpenLightbox }: GalleryViewProps) {
         </div>
       </div>
 
+      {/* Framed uncropped Instagram posters — zero text underneath (name shown inside Lightbox only) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {visiblePhotos.map(({ photo, originalIndex }) => (
-          <figure
+          <div
             key={photo.id}
-            className="group rounded-2xl overflow-hidden bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22] flex flex-col"
+            className="group rounded-2xl overflow-hidden bg-[#F2E8DC] dark:bg-[#261D18] border border-[#DFCEBC] dark:border-[#3E3028]"
           >
             <button
               type="button"
               onClick={() => onOpenLightbox(originalIndex)}
               aria-label={photo.title[lang]}
-              className="relative aspect-[4/3] w-full overflow-hidden block cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
+              className="relative aspect-square w-full p-3 sm:p-4 overflow-hidden block cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
             >
               <SmartImage
                 src={photo.url}
                 alt={photo.title[lang]}
-                className="transition-transform duration-400 ease-out group-hover:scale-[1.035]"
+                fit="contain"
+                containerClassName="bg-[#F2E8DC] dark:bg-[#261D18] rounded-xl"
+                className="transition-transform duration-300 ease-out group-hover:scale-[1.02]"
               />
-              <span className="pointer-events-none absolute top-3 end-3 w-9 h-9 rounded-full flex items-center justify-center bg-[#160F0B]/55 text-[#FFFDF9] opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-xs">
+              <span className="pointer-events-none absolute top-4 end-4 w-10 h-10 rounded-full flex items-center justify-center bg-[#160F0B]/70 text-[#FFFDF9] opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-xs">
                 <Expand className="w-4 h-4" aria-hidden="true" />
               </span>
             </button>
-
-            <figcaption className="px-4 py-3.5 sm:px-5 sm:py-4">
-              <h2 className="font-display text-base sm:text-lg font-bold text-[#241914] dark:text-[#F6EDE3]">
-                {photo.title[lang]}
-              </h2>
-            </figcaption>
-          </figure>
+          </div>
         ))}
       </div>
     </div>
