@@ -1,0 +1,6 @@
+{
+  "name": "اطايب مرحبا | Atayeb Marhaba",
+  "description": "مخبز اطايب مرحبا في جدة — أصل المنقوشة، معجنات مختارة بعناية، كيك أنيق وحلويات منوعة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
