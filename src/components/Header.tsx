@@ -1,5 +1,6 @@
 import { Moon, Sun } from 'lucide-react';
 import { Language, PageId, UI_COPY } from '../data/bakeryData';
+import { BrandLogo } from './BrandLogo';
 
 interface HeaderProps {
   lang: Language;
@@ -30,15 +31,9 @@ export function Header({
     <header className="sticky top-0 z-40 border-b border-[#E6D8C8]/90 dark:border-[#342821] bg-[#FBF7F0]/92 dark:bg-[#17120F]/92 backdrop-blur-md transition-colors duration-200">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Primary top bar row */}
-        <div className="h-16 flex items-center justify-between gap-4">
-          {/* Zone 1: Clean single-line brand wordmark */}
-          <button
-            type="button"
-            onClick={() => onNavigate('home')}
-            className="font-display text-lg sm:text-xl font-bold tracking-tight text-[#241914] dark:text-[#F6EDE3] hover:text-[#C85A17] dark:hover:text-[#E57A32] transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C85A17] dark:focus-visible:outline-[#E57A32] rounded-md"
-          >
-            {UI_COPY.brandShort[lang]}
-          </button>
+        <div className="h-[68px] sm:h-[74px] flex items-center justify-between gap-4">
+          {/* Zone 1: Designed Brand Logo linking to Home */}
+          <BrandLogo onClick={() => onNavigate('home')} />
 
           {/* Zone 2: Desktop pill-shaped navigation */}
           <nav
