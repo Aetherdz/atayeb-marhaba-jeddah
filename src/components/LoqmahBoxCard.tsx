@@ -41,7 +41,7 @@ export function LoqmahBoxCard({ lang }: LoqmahBoxCardProps) {
             >
               {UI_COPY.loqmahCard.title[lang]}
             </h2>
-            <p className="font-display text-sm sm:text-base font-medium text-[#9A4715] dark:text-[#E57A32]">
+            <p className="font-display text-sm sm:text-base font-medium text-[#5C473B] dark:text-[#D6C3B4]">
               {UI_COPY.loqmahCard.quote[lang]}
             </p>
           </div>
@@ -63,10 +63,10 @@ export function LoqmahBoxCard({ lang }: LoqmahBoxCardProps) {
                   type="button"
                   aria-pressed={isSelected}
                   onClick={() => toggleVariety(variety.id)}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C85A17] dark:focus-visible:outline-[#E57A32] ${
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] ${
                     isSelected
-                      ? 'bg-[#C85A17] border-[#C85A17] text-[#FFFDF9] dark:bg-[#E57A32] dark:border-[#E57A32] dark:text-[#17120F]'
-                      : 'bg-[#F7F0E6] dark:bg-[#2B211B] border-[#E4D5C3] dark:border-[#3D3027] text-[#3B2A21] dark:text-[#EFE4D8] hover:border-[#C85A17] dark:hover:border-[#E57A32]'
+                      ? 'bg-[#2C1C14] border-[#2C1C14] text-[#FFFDF9] dark:bg-[#F4EAE0] dark:border-[#F4EAE0] dark:text-[#17120F]'
+                      : 'bg-[#F7F0E6] dark:bg-[#2B211B] border-[#E4D5C3] dark:border-[#3D3027] text-[#3B2A21] dark:text-[#EFE4D8] hover:border-[#5C473B] dark:hover:border-[#CDBBAE]'
                   }`}
                 >
                   {isSelected && (
@@ -81,7 +81,7 @@ export function LoqmahBoxCard({ lang }: LoqmahBoxCardProps) {
 
         <div className="lg:col-span-5 p-5 rounded-xl bg-[#F4ECE1] dark:bg-[#1B1410] border border-[#E6D8C8] dark:border-[#342821] flex flex-col justify-between gap-5">
           <div className="space-y-1.5">
-            <p className="text-xs font-semibold text-[#7D6759] dark:text-[#B5A090]">
+            <p className="text-xs font-semibold text-[#6B5446] dark:text-[#BFA99A]">
               {UI_COPY.loqmahCard.selectedLabel[lang]}
             </p>
             <p className="font-display text-base font-bold leading-relaxed text-[#241914] dark:text-[#F6EDE3]">
@@ -95,7 +95,7 @@ export function LoqmahBoxCard({ lang }: LoqmahBoxCardProps) {
             href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#C85A17] hover:bg-[#AD4B11] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-sm font-semibold transition-colors duration-200 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C85A17] dark:focus-visible:outline-[#E57A32]"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#B2480B] hover:bg-[#963B08] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-sm font-semibold transition-colors duration-200 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
           >
             <Instagram className="w-4 h-4 shrink-0" aria-hidden="true" />
             <span>{UI_COPY.actions.instagramCta[lang]}</span>

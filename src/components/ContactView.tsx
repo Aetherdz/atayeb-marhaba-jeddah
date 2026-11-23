@@ -6,6 +6,7 @@ import {
   PageId,
   UI_COPY,
 } from '../data/bakeryData';
+import { FaqSection } from './FaqSection';
 import { HowToOrderSection } from './HowToOrderSection';
 
 interface ContactViewProps {
@@ -25,7 +26,35 @@ export function ContactView({ lang, onNavigate }: ContactViewProps) {
         </p>
       </div>
 
-      {/* How to Order (3 Real Channels Only) */}
+      {/* Verbatim Instagram Bio (appears once only on the site) */}
+      <section
+        aria-labelledby="instagram-bio-heading"
+        className="p-6 sm:p-8 rounded-2xl bg-[#F4ECE1] dark:bg-[#201814] border border-[#E6D8C8] dark:border-[#362A22] space-y-4"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2
+            id="instagram-bio-heading"
+            className="text-xs sm:text-sm font-semibold text-[#5C473B] dark:text-[#CDBBAE]"
+          >
+            {UI_COPY.contact.bioSourceLabel[lang]}
+          </h2>
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#241914] dark:text-[#F6EDE3] underline decoration-[#C9B39E] dark:decoration-[#665143] underline-offset-4 hover:decoration-[#241914] dark:hover:decoration-[#F6EDE3] transition-colors rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
+          >
+            <span dir="ltr">@atayeb_marhaba</span>
+            <ExternalLink className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+          </a>
+        </div>
+
+        <p className="font-display text-base sm:text-lg font-medium leading-[1.8] text-[#241914] dark:text-[#F6EDE3]">
+          {UI_COPY.bio[lang]}
+        </p>
+      </section>
+
+      {/* Simplified Compact How to Order Row */}
       <HowToOrderSection lang={lang} onNavigate={onNavigate} />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
@@ -45,7 +74,7 @@ export function ContactView({ lang, onNavigate }: ContactViewProps) {
               href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-[#C85A17] hover:bg-[#AD4B11] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-sm sm:text-base font-semibold transition-colors duration-200 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C85A17] dark:focus-visible:outline-[#E57A32]"
+              className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-[#B2480B] hover:bg-[#963B08] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-sm sm:text-base font-semibold transition-colors duration-200 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
             >
               <Instagram className="w-[18px] h-[18px]" aria-hidden="true" />
               <span>{UI_COPY.actions.instagramCta[lang]}</span>
@@ -54,7 +83,7 @@ export function ContactView({ lang, onNavigate }: ContactViewProps) {
 
             <span
               dir="ltr"
-              className="text-sm font-medium text-[#7D6759] dark:text-[#A89283]"
+              className="text-sm font-medium text-[#6B5446] dark:text-[#BFA99A]"
             >
               @atayeb_marhaba
             </span>
@@ -95,6 +124,9 @@ export function ContactView({ lang, onNavigate }: ContactViewProps) {
           ))}
         </ul>
       </section>
+
+      {/* Shortened 3-question FAQ Accordion at the end of Contact page */}
+      <FaqSection lang={lang} />
     </div>
   );
 }

@@ -41,6 +41,7 @@ export interface StoreQuote {
   id: string;
   text: Record<Language, string>;
   context: Record<Language, string>;
+  postUrl: string;
 }
 
 export interface JeddahBranch {
@@ -51,12 +52,11 @@ export interface JeddahBranch {
   road: Record<Language, string>;
 }
 
-export interface QuickInfoPillar {
+export interface CategoryPhotoCard {
   id: string;
   title: Record<Language, string>;
-  subtitle: Record<Language, string>;
-  targetPage: PageId;
-  targetCategory?: ProductCategory;
+  imageUrl: string;
+  targetCategory: ProductCategory;
 }
 
 export interface FaqItem {
@@ -414,6 +414,7 @@ export const STORE_QUOTES: readonly StoreQuote[] = [
       ar: 'تيراميسو',
       en: 'Tiramisu',
     },
+    postUrl: 'https://www.instagram.com/p/DgDdvfuu1hK/',
   },
   {
     id: 'box-quote',
@@ -425,104 +426,73 @@ export const STORE_QUOTES: readonly StoreQuote[] = [
       ar: 'بوكس اللقمة',
       en: 'Loqmah Box',
     },
+    postUrl: 'https://www.instagram.com/p/DgC9YvRODHs/',
   },
 ] as const;
 
-export const QUICK_INFO_PILLARS: readonly QuickInfoPillar[] = [
+export const CATEGORY_PHOTO_CARDS: readonly CategoryPhotoCard[] = [
   {
-    id: 'mankousheh-origin',
-    title: { ar: 'أصل المنقوشة', en: 'The Origin of Mankousheh' },
-    subtitle: {
-      ar: 'زعتر، لحم، جبنة، ولحم بعجين وبوكس اللقمة',
-      en: 'Za’atar, meat, cheese, lahm bi ajeen & Loqmah Box',
-    },
-    targetPage: 'products',
+    id: 'cat-mankousheh',
+    title: { ar: 'مناقيش', en: 'Mankousheh' },
+    imageUrl:
+      'https://images.weserv.nl/?url=www.instagram.com/p/DgBfYoDt48i/media/?size=l&output=jpg',
     targetCategory: 'savory',
   },
   {
-    id: 'professional-team',
-    title: { ar: 'طاقم محترف', en: 'Professional Team' },
-    subtitle: {
-      ar: 'خبرة يُشهد لها في فروع جدة',
-      en: 'Proven expertise across Jeddah branches',
-    },
-    targetPage: 'branches',
+    id: 'cat-pastries',
+    title: { ar: 'معجنات', en: 'Pastries' },
+    imageUrl:
+      'https://images.weserv.nl/?url=www.instagram.com/p/Df8FsHHurVV/media/?size=l&output=jpg',
+    targetCategory: 'savory',
   },
   {
-    id: 'selected-pastries',
-    title: { ar: 'معجنات مختارة بعناية', en: 'Carefully Selected Pastries' },
-    subtitle: {
-      ar: 'شاهد صوراً حقيقية من أصناف المخبز',
-      en: 'Explore real photography from the bakery',
-    },
-    targetPage: 'gallery',
+    id: 'cat-cakes',
+    title: { ar: 'كيك', en: 'Cakes' },
+    imageUrl:
+      'https://images.weserv.nl/?url=www.instagram.com/p/DgAyj3JurXW/media/?size=l&output=jpg',
+    targetCategory: 'sweets',
   },
   {
-    id: 'elegant-cakes-sweets',
-    title: { ar: 'كيك أنيق وحلويات منوعة', en: 'Elegant Cakes & Assorted Sweets' },
-    subtitle: {
-      ar: 'تيراميسو وتشكيلة كيك أنيق بأصناف متعددة',
-      en: 'Tiramisu and a variety of elegant cakes',
-    },
-    targetPage: 'products',
+    id: 'cat-sweets',
+    title: { ar: 'حلويات', en: 'Sweets' },
+    imageUrl:
+      'https://images.weserv.nl/?url=www.instagram.com/p/DgDdvfuu1hK/media/?size=l&output=jpg',
     targetCategory: 'sweets',
   },
 ] as const;
 
 export const FAQ_ITEMS: readonly FaqItem[] = [
   {
-    id: 'faq-items',
+    id: 'faq-occasion-cakes',
     question: {
-      ar: 'ما أبرز الأصناف المتوفرة في اطايب مرحبا؟',
-      en: 'What are the main items available at Atayeb Marhaba?',
+      ar: 'ما أنواع الكيك الأنيق المتوفرة للمناسبات؟',
+      en: 'Which elegant cakes are available for occasions?',
     },
     answer: {
-      ar: 'تتوفر في اطايب مرحبا تشكيلة من المناقيش، وبوكس اللقمة، ومعجنات مختارة بعناية، وكيك أنيق، وحلويات منوعة، وتيراميسو، وخبز الساوردو بالبذور، وباتون ساليه، ورقاق مرحبا، وأصناف رمضان.',
-      en: 'Atayeb Marhaba offers mankousheh, Loqmah Box, carefully selected pastries, elegant cakes, assorted sweets, tiramisu, seeded sourdough bread, baton salé, Raqaq Marhaba, and Ramadan specialties.',
+      ar: 'تتوفر تشكيلة الكيك الأنيق بأصناف: كيكة بلاك فورست، كيكة وايت فورست، كيكة فيريرو روشيه، كيكة الجزر، وكيكة الفراولة، إضافةً إلى التيراميسو والحلويات المنوعة.',
+      en: 'Our elegant cakes include Black Forest Cake, White Forest Cake, Ferrero Rocher Cake, Carrot Cake, and Strawberry Cake, alongside tiramisu and assorted sweets.',
     },
   },
   {
-    id: 'faq-mankousheh-box',
+    id: 'faq-loqmah-box',
     question: {
-      ar: 'ما أصناف المناقيش المتوفرة وما هو «بوكس اللقمة»؟',
-      en: 'Which mankousheh varieties are available and what is the Loqmah Box?',
+      ar: 'كيف أختار تشكيلة «بوكس اللقمة»؟',
+      en: 'How can I choose the Loqmah Box assortment?',
     },
     answer: {
-      ar: 'تتوفر المناقيش بأصناف زعتر، ولحم، وجبنة، ولحم بعجين. أما «بوكس اللقمة» فهو بوكس مناقيش صغيرة متنوعة تختار أصنافها على ذوقك.',
-      en: 'Mankousheh is available in za’atar, meat, cheese, and lahm bi ajeen. The Loqmah Box is an assorted mini mankousheh box where you choose your preferred varieties.',
+      ar: '«بوكس اللقمة» هو بوكس مناقيش صغيرة متنوعة تختار أصنافها على ذوقك من أصناف المناقيش: زعتر، ولحم، وجبنة، ولحم بعجين.',
+      en: 'The Loqmah Box is an assorted mini mankousheh box where you choose your mix from our mankousheh varieties: za’atar, meat, cheese, and lahm bi ajeen.',
     },
   },
   {
-    id: 'faq-cakes-baton',
+    id: 'faq-seasonal-items',
     question: {
-      ar: 'ما أنواع الكيك الأنيق ونكهات الباتون ساليه؟',
-      en: 'What are the elegant cake varieties and baton salé flavors?',
+      ar: 'هل تتوفر أصناف موسمية؟',
+      en: 'Are seasonal specialties available?',
     },
     answer: {
-      ar: 'تشمل تشكيلة الكيك الأنيق: كيكة بلاك فورست، كيكة وايت فورست، كيكة فيريرو روشيه، كيكة الجزر، وكيكة الفراولة. ويتوفر الباتون ساليه بنكهات السمسم، وحبة البركة، والكمون، والسماق.',
-      en: 'Elegant cakes include Black Forest Cake, White Forest Cake, Ferrero Rocher Cake, Carrot Cake, and Strawberry Cake. Baton salé is available in sesame, black seed, cumin, and sumac flavors.',
-    },
-  },
-  {
-    id: 'faq-delivery-apps',
-    question: {
-      ar: 'عبر أي تطبيقات توصيل يمكن الطلب؟',
-      en: 'Which delivery apps can I order through?',
-    },
-    answer: {
-      ar: 'الطلب متاح عبر تطبيقات التوصيل: Ninja وHungerstation وKeeta وJahez وNoon.',
-      en: 'Ordering is available via the delivery apps: Ninja, Hungerstation, Keeta, Jahez, and Noon.',
-    },
-  },
-  {
-    id: 'faq-contact-branches',
-    question: {
-      ar: 'كيف أتواصل مع المخبز أو أصل إلى فروع جدة؟',
-      en: 'How can I contact the bakery or reach Jeddah branches?',
-    },
-    answer: {
-      ar: 'يمكنك مراسلتنا مباشرة عبر حساب إنستغرام الرسمي @atayeb_marhaba، كما تتوفر صفحتنا على فيسبوك باسم Atayeb Marhaba، وتجد جميع عناوين فروع جدة مرتبطة ببحث خرائط Google في صفحة الفروع.',
-      en: 'You can message us directly on our official Instagram account @atayeb_marhaba. Our Facebook page is also available under the name Atayeb Marhaba, and all Jeddah branch addresses link directly to Google Maps in the Branches section.',
+      ar: 'نعم، تتوفر أصناف رمضان ضمن تشكيلة اطايب مرحبا إلى جانب رقاق مرحبا والمعجنات والمخبوزات.',
+      en: 'Yes, Ramadan specialties are available within Atayeb Marhaba’s selection alongside Raqaq Marhaba, pastries, and baked goods.',
     },
   },
 ] as const;
@@ -574,12 +544,22 @@ export const UI_COPY = {
     goToProducts: { ar: 'الانتقال إلى المنتجات', en: 'Go to Products' },
   },
   home: {
+    heroLine1: { ar: 'اطايب مرحبا', en: 'Atayeb Marhaba' },
+    heroLine2: { ar: 'مخبز في جدة', en: 'Bakery in Jeddah' },
+    heroSubtitle: {
+      ar: 'من المناقيش والمعجنات إلى الكيك والحلويات.',
+      en: 'From mankousheh and pastries to cakes and sweets.',
+    },
+    heroProductsCta: { ar: 'المنتجات', en: 'Products' },
+    heroBranchesCta: { ar: 'فروع جدة', en: 'Jeddah Branches' },
     stripTitle: { ar: 'لقطات من المخبز', en: 'From the Bakery' },
     stripHint: {
       ar: 'انقر على أي صورة لعرضها بحجم كبير',
       en: 'Select any photo to preview it above',
     },
-    quotesTitle: { ar: 'بصوت اطايب مرحبا', en: 'In Our Words' },
+    categoriesTitle: { ar: 'الأقسام', en: 'Categories' },
+    quotesTitle: { ar: 'من حسابنا على إنستغرام', en: 'From Our Instagram' },
+    originalPostLink: { ar: 'من المنشور الأصلي', en: 'From the original post' },
     productsHeading: { ar: 'منتجاتنا', en: 'Our Products' },
     productsSubheading: {
       ar: 'تشكيلة مختارة من المناقيش والمعجنات والكيك والحلويات.',
@@ -613,29 +593,29 @@ export const UI_COPY = {
       ar: 'الطلب متاح عبر التطبيقات التالية بالاسم:',
       en: 'Ordering is available through these apps:',
     },
-    step2Title: { ar: 'زيارة فروع جدة', en: 'Visit Jeddah Branches' },
+    step2Title: { ar: 'فروع جدة', en: 'Jeddah Branches' },
     step2Desc: {
-      ar: 'تصفح عناوين فروع جدة وافتح موقع الفرع مباشرة عبر خرائط Google.',
-      en: 'Browse Jeddah branch addresses and open directions directly in Google Maps.',
+      ar: 'عناوين فروع جدة عبر خرائط Google',
+      en: 'Jeddah branch addresses via Google Maps',
     },
-    step3Title: { ar: 'المراسلة عبر إنستغرام', en: 'Message on Instagram' },
+    step3Title: { ar: 'إنستغرام', en: 'Instagram' },
     step3Desc: {
-      ar: 'تواصل معنا مباشرة عبر حسابنا الرسمي @atayeb_marhaba على إنستغرام.',
-      en: 'Reach out directly via our official @atayeb_marhaba Instagram account.',
+      ar: 'المراسلة عبر الحساب الرسمي @atayeb_marhaba',
+      en: 'Message via official account @atayeb_marhaba',
     },
   },
   faq: {
     title: { ar: 'أسئلة شائعة', en: 'Frequently Asked Questions' },
     subtitle: {
-      ar: 'إجابات سريعة حول أصناف اطايب مرحبا وطرق الطلب والفروع في جدة.',
-      en: 'Quick answers about Atayeb Marhaba items, ordering channels, and Jeddah branches.',
+      ar: 'إجابات مختصرة من المعلومات الموثّقة عن الأصناف.',
+      en: 'Brief verified answers about our offerings.',
     },
   },
   products: {
     pageTitle: { ar: 'المنتجات', en: 'Products' },
     pageSubtitle: {
-      ar: 'مناقيش، بوكس اللقمة، معجنات، كيك أنيق، حلويات منوعة، تيراميسو، خبز الساوردو بالبذور، باتون ساليه، رقاق مرحبا، وأصناف رمضان.',
-      en: 'Mankousheh, Loqmah Box, pastries, elegant cakes, assorted sweets, tiramisu, seeded sourdough bread, baton salé, Raqaq Marhaba, and Ramadan specialties.',
+      ar: 'من المناقيش والمعجنات إلى الكيك والحلويات.',
+      en: 'From mankousheh and pastries to cakes and sweets.',
     },
     searchPlaceholder: {
       ar: 'ابحث عن صنف أو نكهة (مثل: زعتر، فيريرو، سماق، ساوردو...)',
@@ -694,6 +674,10 @@ export const UI_COPY = {
     pageSubtitle: {
       ar: 'تواصل معنا عبر إنستغرام أو اطلب عبر تطبيقات التوصيل المتاحة.',
       en: 'Reach out to us on Instagram or order through available delivery apps.',
+    },
+    bioSourceLabel: {
+      ar: 'من سيرة حساب إنستغرام',
+      en: 'From our Instagram bio',
     },
     instagramCardTitle: { ar: 'إنستغرام', en: 'Instagram' },
     instagramCardDesc: {

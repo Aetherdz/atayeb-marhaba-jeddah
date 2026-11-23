@@ -38,14 +38,14 @@ export function FaqSection({ lang }: FaqSectionProps) {
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => handleToggle(item.id)}
-                className="w-full px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-4 text-start hover:bg-[#F7F0E6]/60 dark:hover:bg-[#2A201B]/60 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-[#C85A17] dark:focus-visible:outline-[#E57A32]"
+                className="w-full px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-4 text-start hover:bg-[#F7F0E6]/60 dark:hover:bg-[#2A201B]/60 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
               >
                 <span className="font-display text-sm sm:text-base font-bold text-[#241914] dark:text-[#F6EDE3]">
                   {item.question[lang]}
                 </span>
                 <ChevronDown
                   aria-hidden="true"
-                  className={`w-5 h-5 shrink-0 text-[#9A4715] dark:text-[#E57A32] transition-transform duration-200 ${
+                  className={`w-5 h-5 shrink-0 text-[#5C473B] dark:text-[#CDBBAE] transition-transform duration-200 ${
                     isOpen ? 'rotate-180' : ''
                   }`}
                 />

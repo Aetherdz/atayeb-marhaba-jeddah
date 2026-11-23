@@ -58,9 +58,9 @@ export function GalleryView({ lang, onOpenLightbox }: GalleryViewProps) {
                 type="button"
                 aria-selected={isSelected}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C85A17] dark:focus-visible:outline-[#E57A32] ${
+                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] ${
                   isSelected
-                    ? 'bg-[#C85A17] text-[#FFFDF9] dark:bg-[#E57A32] dark:text-[#17120F]'
+                    ? 'bg-[#2C1C14] text-[#FFFDF9] dark:bg-[#F4EAE0] dark:text-[#17120F]'
                     : 'text-[#5C473B] dark:text-[#CDBBAE] hover:text-[#241914] dark:hover:text-[#F6EDE3]'
                 }`}
               >
@@ -72,7 +72,7 @@ export function GalleryView({ lang, onOpenLightbox }: GalleryViewProps) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {visiblePhotos.map(({ photo, originalIndex }, idx) => (
+        {visiblePhotos.map(({ photo, originalIndex }) => (
           <figure
             key={photo.id}
             className="group rounded-2xl overflow-hidden bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22] flex flex-col"
@@ -81,12 +81,11 @@ export function GalleryView({ lang, onOpenLightbox }: GalleryViewProps) {
               type="button"
               onClick={() => onOpenLightbox(originalIndex)}
               aria-label={photo.title[lang]}
-              className="relative aspect-[4/3] w-full overflow-hidden block cursor-pointer focus-visible:outline-2 focus-visible:outline-[#C85A17]"
+              className="relative aspect-[4/3] w-full overflow-hidden block cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
             >
               <SmartImage
                 src={photo.url}
                 alt={photo.title[lang]}
-                priority={idx < 3}
                 className="transition-transform duration-400 ease-out group-hover:scale-[1.035]"
               />
               <span className="pointer-events-none absolute top-3 end-3 w-9 h-9 rounded-full flex items-center justify-center bg-[#160F0B]/55 text-[#FFFDF9] opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-xs">

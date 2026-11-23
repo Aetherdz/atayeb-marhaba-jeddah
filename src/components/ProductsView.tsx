@@ -118,9 +118,9 @@ export function ProductsView({
                   type="button"
                   aria-selected={isSelected}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C85A17] dark:focus-visible:outline-[#E57A32] ${
+                  className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] ${
                     isSelected
-                      ? 'bg-[#C85A17] text-[#FFFDF9] dark:bg-[#E57A32] dark:text-[#17120F]'
+                      ? 'bg-[#2C1C14] text-[#FFFDF9] dark:bg-[#F4EAE0] dark:text-[#17120F]'
                       : 'text-[#5C473B] dark:text-[#CDBBAE] hover:text-[#241914] dark:hover:text-[#F6EDE3]'
                   }`}
                 >
@@ -133,7 +133,7 @@ export function ProductsView({
           <div className="relative w-full lg:max-w-sm">
             <Search
               aria-hidden="true"
-              className="pointer-events-none absolute top-1/2 -translate-y-1/2 start-3.5 w-4 h-4 text-[#8A7162] dark:text-[#A99282]"
+              className="pointer-events-none absolute top-1/2 -translate-y-1/2 start-3.5 w-4 h-4 text-[#7D6759] dark:text-[#A99282]"
             />
             <input
               type="search"
@@ -141,14 +141,14 @@ export function ProductsView({
               onChange={(e) => setQuery(e.target.value)}
               placeholder={UI_COPY.products.searchPlaceholder[lang]}
               aria-label={UI_COPY.products.searchPlaceholder[lang]}
-              className="w-full ps-10 pe-10 py-2.5 rounded-full bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E4D5C3] dark:border-[#3A2D25] text-sm text-[#241914] dark:text-[#F6EDE3] placeholder:text-[#8A7162] dark:placeholder:text-[#9C8677] focus:outline-none focus:border-[#C85A17] dark:focus:border-[#E57A32] transition-colors"
+              className="w-full ps-10 pe-10 py-2.5 rounded-full bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E4D5C3] dark:border-[#3A2D25] text-sm text-[#241914] dark:text-[#F6EDE3] placeholder:text-[#7D6759] dark:placeholder:text-[#9C8677] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] transition-colors"
             />
             {query && (
               <button
                 type="button"
                 onClick={() => setQuery('')}
                 aria-label={UI_COPY.actions.clearSearch[lang]}
-                className="absolute top-1/2 -translate-y-1/2 end-2.5 w-7 h-7 rounded-full flex items-center justify-center text-[#7D6759] dark:text-[#B5A090] hover:bg-[#F1E7DA] dark:hover:bg-[#31261F] transition-colors cursor-pointer"
+                className="absolute top-1/2 -translate-y-1/2 end-2.5 w-7 h-7 rounded-full flex items-center justify-center text-[#5C473B] dark:text-[#CDBBAE] hover:bg-[#F1E7DA] dark:hover:bg-[#31261F] transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
               >
                 <X className="w-3.5 h-3.5" aria-hidden="true" />
               </button>
@@ -166,31 +166,43 @@ export function ProductsView({
           <button
             type="button"
             onClick={handleReset}
-            className="px-5 py-2 rounded-full bg-[#C85A17] hover:bg-[#AD4B11] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-sm font-semibold transition-colors cursor-pointer"
+            className="px-5 py-2.5 rounded-full bg-[#B2480B] hover:bg-[#963B08] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-sm font-semibold transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3]"
           >
             {UI_COPY.actions.resetFilters[lang]}
           </button>
         </div>
       )}
 
-      {/* Photographed Products Grid */}
+      {/* Asymmetric Editorial Photographed Products Grid */}
       {visibleFeatured.length > 0 && (
         <section aria-label={UI_COPY.products.pageTitle[lang]}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {visibleFeatured.map((product) => {
               const originalIndex = FEATURED_PRODUCTS.findIndex(
                 (p) => p.id === product.id
               );
+              const isWideFeatured =
+                visibleFeatured.length > 1 &&
+                (product.id === 'tiramisu' ||
+                  product.id === 'elegant-cakes' ||
+                  product.id === 'baton-sale');
+
               return (
                 <article
                   key={product.id}
-                  className="group rounded-2xl overflow-hidden bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22] transition-transform duration-200 hover:-translate-y-0.5 flex flex-col"
+                  className={`group rounded-2xl overflow-hidden bg-[#FFFDF9] dark:bg-[#221A16] border border-[#E6D8C8] dark:border-[#362A22] transition-transform duration-200 hover:-translate-y-0.5 flex flex-col ${
+                    isWideFeatured ? 'lg:col-span-2 lg:flex-row' : ''
+                  }`}
                 >
                   <button
                     type="button"
                     onClick={() => onOpenLightbox(originalIndex)}
                     aria-label={product.name[lang]}
-                    className="relative aspect-[4/3] w-full overflow-hidden block cursor-pointer focus-visible:outline-2 focus-visible:outline-[#C85A17]"
+                    className={`relative overflow-hidden block cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] ${
+                      isWideFeatured
+                        ? 'aspect-[4/3] lg:aspect-auto lg:w-[56%] lg:min-h-[300px] shrink-0'
+                        : 'aspect-[4/3] w-full'
+                    }`}
                   >
                     <SmartImage
                       src={product.imageUrl}
@@ -210,7 +222,7 @@ export function ProductsView({
                     </div>
 
                     {product.varieties && (
-                      <div className="pt-3.5 border-t border-[#F0E5D8] dark:border-[#332720] text-xs sm:text-sm font-medium text-[#8E3C0C] dark:text-[#E09B6B] leading-relaxed">
+                      <div className="pt-3.5 border-t border-[#F0E5D8] dark:border-[#332720] text-xs sm:text-sm font-medium text-[#6B5446] dark:text-[#BFA99A] leading-relaxed">
                         {product.varieties[lang].join(' · ')}
                       </div>
                     )}
