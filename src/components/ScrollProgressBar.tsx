@@ -62,7 +62,7 @@ export function ScrollProgressBar({ lang, activePage }: ScrollProgressBarProps) 
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute top-0 inset-x-0 h-[2px] bg-transparent overflow-hidden"
+      className="pointer-events-none fixed top-0 inset-x-0 z-50 h-[2.5px] bg-transparent overflow-hidden"
     >
       <div
         className={`h-full w-full bg-[#C85A17] dark:bg-[#E57A32] will-change-transform ${

@@ -146,7 +146,7 @@ export function Lightbox({
               onClose();
               onGoToProducts();
             }}
-            className="min-h-[44px] inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#A84208] hover:bg-[#8E3706] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-sm sm:text-[15px] font-bold transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+            className="min-h-[44px] inline-flex items-center gap-1.5 px-5 py-2 rounded-xl bg-[#A84208] hover:bg-[#8E3706] dark:bg-[#E57A32] dark:hover:bg-[#F08D49] text-[#FFFDF9] dark:text-[#17120F] text-sm sm:text-[15px] font-bold transition-colors duration-150 active:scale-[0.98] whitespace-nowrap shrink-0 cursor-pointer"
           >
             <span>{UI_COPY.actions.goToProducts[lang]}</span>
             <DirectionArrow className="w-4 h-4" aria-hidden="true" />
@@ -165,7 +165,7 @@ export function Lightbox({
                   onClick={() => onNavigate(idx)}
                   aria-label={thumb.title[lang]}
                   aria-current={isSelected ? 'true' : undefined}
-                  className={`relative w-16 sm:w-20 aspect-square rounded-lg overflow-hidden shrink-0 border-2 transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] ${
+                  className={`relative w-14 sm:w-16 aspect-[4/5] rounded-lg overflow-hidden shrink-0 border-2 transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-[#241914] dark:focus-visible:outline-[#F6EDE3] ${
                     isSelected
                       ? 'border-[#241914] dark:border-[#F6EDE3] opacity-100'
                       : 'border-transparent opacity-70 hover:opacity-100'

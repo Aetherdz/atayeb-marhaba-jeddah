@@ -11,11 +11,17 @@
     font-family: var(--font-body);
     font-size: 16px;
     scroll-behavior: smooth;
+    overflow-x: clip;
   }
 
   body {
     font-size: 1rem;
     line-height: 1.65;
+    overflow-x: clip;
+  }
+
+  .dark body {
+    letter-spacing: 0.006em;
   }
 
   @media (min-width: 640px) {
@@ -30,7 +36,11 @@
   }
 }
 
-/* Hide scrollbars cleanly for horizontal pill nav / photo strip on mobile */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Hide scrollbars cleanly for horizontal filter strips on mobile */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

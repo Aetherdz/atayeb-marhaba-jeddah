@@ -47,7 +47,7 @@ export default function App() {
   const [darkMode, setDarkMode] = useState<boolean>(getInitialTheme);
   const [activePage, setActivePage] = useState<PageId>(getInitialPage);
   const [productCategory, setProductCategory] =
-    useState<ProductCategory>('all');
+    useState<ProductCategory>('mnakeesh');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   // Sync HTML dir, lang, and document title when language switches
@@ -88,7 +88,7 @@ export default function App() {
     if (page === 'products' && nextProductCategory) {
       setProductCategory(nextProductCategory);
     } else if (page === 'products' && !nextProductCategory) {
-      setProductCategory('all');
+      setProductCategory('mnakeesh');
     }
     setActivePage(page);
     if (window.location.hash !== `#${page}`) {
@@ -106,7 +106,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FBF7F0] text-[#241914] dark:bg-[#17120F] dark:text-[#F6EDE3] transition-colors duration-200">
+    <div className="min-h-screen flex flex-col bg-[#FBF7F0] text-[#241914] dark:bg-[#17120F] dark:text-[#F6EDE3] transition-colors duration-200 pb-[74px] md:pb-0">
       <Header
         lang={lang}
         darkMode={darkMode}
@@ -116,7 +116,7 @@ export default function App() {
         onToggleTheme={handleToggleTheme}
       />
 
-      <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 pt-5 pb-10 sm:py-10 lg:py-12">
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activePage}-${lang}`}

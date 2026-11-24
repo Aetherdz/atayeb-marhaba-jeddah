@@ -2,25 +2,19 @@ export type Language = 'ar' | 'en';
 
 export type PageId = 'home' | 'products' | 'gallery' | 'branches' | 'contact';
 
-export type ProductCategory = 'all' | 'savory' | 'sweets' | 'seasonal';
+export type ProductCategory = 'mnakeesh' | 'all' | 'savory' | 'sweets' | 'seasonal';
+
+export type MnakeeshCategory =
+  | 'all'
+  | 'cheese'
+  | 'meat'
+  | 'labneh'
+  | 'assorted'
+  | 'sweet';
 
 export type GalleryCategory = 'all' | 'savory' | 'sweets';
 
-export type BranchRoadFilter =
-  | 'all'
-  | 'prince-sultan'
-  | 'king-abdulaziz'
-  | 'prince-mohammed';
-
-export type BranchDistrictFilter =
-  | 'all'
-  | 'al-rawdah'
-  | 'al-marwah'
-  | 'al-khalidiyyah'
-  | 'al-hamra'
-  | 'al-salamah'
-  | 'al-safa'
-  | 'abhur-al-janubiyah';
+export type BranchFilterTab = 'all' | 'with-phone' | 'with-address';
 
 export interface BakeryPhoto {
   id: string;
@@ -34,7 +28,7 @@ export interface BakeryPhoto {
 
 export interface FeaturedProduct {
   id: string;
-  category: Exclude<ProductCategory, 'all'>;
+  category: Exclude<ProductCategory, 'all' | 'mnakeesh'>;
   imageUrl: string;
   objectPosition: string;
   name: Record<Language, string>;
@@ -45,24 +39,28 @@ export interface FeaturedProduct {
 
 export interface AdditionalProduct {
   id: string;
-  category: Exclude<ProductCategory, 'all'>;
+  category: Exclude<ProductCategory, 'all' | 'mnakeesh'>;
   name: Record<Language, string>;
   description: Record<Language, string>;
 }
 
-export interface StoreQuote {
+export interface MnakeeshMenuItem {
   id: string;
-  text: Record<Language, string>;
-  context: Record<Language, string>;
-  postUrl: string;
+  category: Exclude<MnakeeshCategory, 'all'>;
+  name: Record<Language, string>;
+  priceLarge: number | null;
+  priceMedium: number | null;
+  priceLoqmah: number | null;
+  calories: number;
+  allergens: Record<Language, string>;
 }
 
 export interface JeddahBranch {
   id: string;
-  address: string;
   district: Record<Language, string>;
-  roadKey: Exclude<BranchRoadFilter, 'all'>;
-  road: Record<Language, string>;
+  phone?: string;
+  address?: string;
+  road?: Record<Language, string>;
 }
 
 export interface CategoryPhotoCard {
@@ -84,6 +82,30 @@ export interface MankoushehVariety {
 }
 
 export const INSTAGRAM_URL = 'https://www.instagram.com/atayeb_marhaba/';
+export const WHATSAPP_NUMBER_INTL = '+966 55 418 0776';
+export const WHATSAPP_NUMBER_RAW = '966554180776';
+export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER_RAW}`;
+
+export function getWhatsAppOrderUrl(message?: string): string {
+  if (!message) return WHATSAPP_URL;
+  return `${WHATSAPP_URL}?text=${encodeURIComponent(message)}`;
+}
+
+export function formatLocalPhoneToTel(localPhone: string): string {
+  const digits = localPhone.replace(/\D/g, '');
+  if (digits.startsWith('0')) {
+    return `tel:+966${digits.slice(1)}`;
+  }
+  return `tel:+${digits}`;
+}
+
+export function formatLocalPhoneDisplay(localPhone: string): string {
+  const digits = localPhone.replace(/\D/g, '');
+  if (digits.length === 10) {
+    return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
+  }
+  return localPhone;
+}
 
 export const DELIVERY_APPS = [
   'Ninja',
@@ -95,17 +117,67 @@ export const DELIVERY_APPS = [
 
 export const JEDDAH_BRANCHES: readonly JeddahBranch[] = [
   {
+    id: 'al-safa',
+    district: { ar: 'حي الصفا', en: 'Al Safa' },
+    phone: '0547709670',
+    address: 'Prince Sultan Rd, Al Safa, Jeddah 23453',
+    road: { ar: 'طريق الأمير سلطان', en: 'Prince Sultan Rd' },
+  },
+  {
+    id: 'al-zahra',
+    district: { ar: 'حي الزهراء', en: 'Al Zahra' },
+    phone: '0592542434',
+  },
+  {
+    id: 'abhur-al-shamaliyah',
+    district: { ar: 'حي أبحر الشمالية', en: 'Abhur Al Shamaliyah' },
+    phone: '0500017156',
+  },
+  {
+    id: 'al-samer',
+    district: { ar: 'حي السامر', en: 'Al Samer' },
+    phone: '0502691015',
+  },
+  {
+    id: 'al-baghdadiyah',
+    district: { ar: 'حي البغدادية الغربية', en: 'Al Baghdadiyah Al Gharbiyah' },
+    phone: '0570077939',
+  },
+  {
+    id: 'al-ajaweed',
+    district: { ar: 'حي الأجاويد', en: 'Al Ajaweed' },
+    phone: '0599830960',
+  },
+  {
+    id: 'al-hamdaniyah',
+    district: { ar: 'حي الحمدانية', en: 'Al Hamdaniyah' },
+    phone: '0597224042',
+  },
+  {
+    id: 'al-naseem',
+    district: { ar: 'حي النسيم', en: 'Al Naseem' },
+    phone: '0580414006',
+  },
+  {
+    id: 'al-bawadi',
+    district: { ar: 'حي البوادي', en: 'Al Bawadi' },
+    phone: '0595512808',
+  },
+  {
+    id: 'al-basateen',
+    district: { ar: 'حي البساتين', en: 'Al Basateen' },
+    phone: '0556575100',
+  },
+  {
     id: 'al-rawdah',
+    district: { ar: 'حي الروضة', en: 'Al Rawdah' },
     address: '2330 Prince Sultan Rd, Al Rawdah, Jeddah 23435, Saudi Arabia',
-    district: { ar: 'الروضة', en: 'Al Rawdah' },
-    roadKey: 'prince-sultan',
     road: { ar: 'طريق الأمير سلطان', en: 'Prince Sultan Rd' },
   },
   {
     id: 'al-marwah',
+    district: { ar: 'حي المروة', en: 'Al Marwah' },
     address: 'Prince Mohammed Bin Abdulaziz St, Al Marwah, Jeddah 23543',
-    district: { ar: 'المروة', en: 'Al Marwah' },
-    roadKey: 'prince-mohammed',
     road: {
       ar: 'شارع الأمير محمد بن عبدالعزيز',
       en: 'Prince Mohammed Bin Abdulaziz St',
@@ -113,56 +185,417 @@ export const JEDDAH_BRANCHES: readonly JeddahBranch[] = [
   },
   {
     id: 'al-khalidiyyah',
+    district: { ar: 'حي الخالدية', en: 'Al Khalidiyyah' },
     address: 'Prince Sultan Rd, Al Khalidiyyah, Jeddah 23422',
-    district: { ar: 'الخالدية', en: 'Al Khalidiyyah' },
-    roadKey: 'prince-sultan',
     road: { ar: 'طريق الأمير سلطان', en: 'Prince Sultan Rd' },
   },
   {
     id: 'al-hamra',
+    district: { ar: 'حي الحمراء', en: 'Al Hamra' },
     address: 'King Abdulaziz Rd, Al Hamra, Jeddah 23321',
-    district: { ar: 'الحمراء', en: 'Al Hamra' },
-    roadKey: 'king-abdulaziz',
     road: { ar: 'طريق الملك عبدالعزيز', en: 'King Abdulaziz Rd' },
   },
   {
     id: 'al-salamah',
+    district: { ar: 'حي السلامة', en: 'Al-Salamah' },
     address: 'King Abdulaziz Rd, Al-Salamah, Jeddah 23525',
-    district: { ar: 'السلامة', en: 'Al-Salamah' },
-    roadKey: 'king-abdulaziz',
     road: { ar: 'طريق الملك عبدالعزيز', en: 'King Abdulaziz Rd' },
   },
   {
-    id: 'al-safa',
-    address: 'Prince Sultan Rd, Al Safa, Jeddah 23453',
-    district: { ar: 'الصفا', en: 'Al Safa' },
-    roadKey: 'prince-sultan',
-    road: { ar: 'طريق الأمير سلطان', en: 'Prince Sultan Rd' },
-  },
-  {
     id: 'abhur-al-janubiyah',
+    district: { ar: 'حي أبحر الجنوبية', en: 'Abhur Al Janubiyah' },
     address: 'King Abdulaziz Rd, Abhur Al Janubiyah, Jeddah 23731',
-    district: { ar: 'أبحر الجنوبية', en: 'Abhur Al Janubiyah' },
-    roadKey: 'king-abdulaziz',
     road: { ar: 'طريق الملك عبدالعزيز', en: 'King Abdulaziz Rd' },
   },
 ] as const;
 
-export const JEDDAH_BRANCH_ADDRESSES: readonly string[] = JEDDAH_BRANCHES.map(
-  (b) => b.address
-);
-
-export function getGoogleMapsSearchUrl(address: string): string {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+export function getBranchMapsQuery(branch: JeddahBranch): string {
+  if (branch.address) {
+    return `Atayeb Marhaba ${branch.district.en}, ${branch.address}`;
+  }
+  return `اطايب مرحبا ${branch.district.ar} جدة`;
 }
 
-export function getGoogleMapsEmbedUrl(
-  districtEn: string,
-  address: string
-): string {
-  const query = `Atayeb Marhaba ${districtEn}, ${address}`;
-  return `https://maps.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
+export function getGoogleMapsSearchUrl(branch: JeddahBranch): string {
+  const query = branch.address ?? `اطايب مرحبا ${branch.district.ar} جدة`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
+
+export function getGoogleMapsEmbedUrl(branch: JeddahBranch): string {
+  return `https://maps.google.com/maps?q=${encodeURIComponent(getBranchMapsQuery(branch))}&output=embed`;
+}
+
+const ALLERGEN_DAIRY_GLUTEN: Record<Language, string> = {
+  ar: 'الحليب ومنتجاته · الحبوب',
+  en: 'Milk & dairy · Gluten',
+};
+
+const ALLERGEN_DAIRY_GLUTEN_SOY: Record<Language, string> = {
+  ar: 'الحليب ومنتجاته · الحبوب · فول الصويا ومنتجاته',
+  en: 'Milk & dairy · Gluten · Soy',
+};
+
+const ALLERGEN_DAIRY_GLUTEN_MEAT: Record<Language, string> = {
+  ar: 'الحليب ومنتجاته · الحبوب · اللحم',
+  en: 'Milk & dairy · Gluten · Meat',
+};
+
+const ALLERGEN_SWEET: Record<Language, string> = {
+  ar: 'الحبوب · المكسرات · الحليب · فول الصويا ومنتجاته',
+  en: 'Gluten · Nuts · Milk · Soy',
+};
+
+export const MNAKEESH_MENU: readonly MnakeeshMenuItem[] = [
+  // Cheese (جبنة)
+  {
+    id: 'cheese-plain',
+    category: 'cheese',
+    name: { ar: 'جبنة سادة', en: 'Plain Cheese' },
+    priceLarge: 12.5,
+    priceMedium: 7.5,
+    priceLoqmah: 5,
+    calories: 808,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'cheese-akkawi',
+    category: 'cheese',
+    name: { ar: 'جبنة عكاوي', en: 'Akkawi Cheese' },
+    priceLarge: 11.5,
+    priceMedium: 7.5,
+    priceLoqmah: 5,
+    calories: 800,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'cheese-zaatar',
+    category: 'cheese',
+    name: { ar: 'جبنة وزعتر', en: 'Cheese & Za’atar' },
+    priceLarge: 13.5,
+    priceMedium: 8.5,
+    priceLoqmah: 5.5,
+    calories: 866,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'cheese-duqqa',
+    category: 'cheese',
+    name: { ar: 'جبنة ودقة', en: 'Cheese & Duqqa' },
+    priceLarge: 13.5,
+    priceMedium: 8.5,
+    priceLoqmah: 5.5,
+    calories: 870,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'cheese-labneh',
+    category: 'cheese',
+    name: { ar: 'جبنة ولبنة', en: 'Cheese & Labneh' },
+    priceLarge: 14.5,
+    priceMedium: 9.5,
+    priceLoqmah: 5.5,
+    calories: 714,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'cheese-spinach',
+    category: 'cheese',
+    name: { ar: 'جبنة وسبانخ', en: 'Cheese & Spinach' },
+    priceLarge: 13.5,
+    priceMedium: 8.5,
+    priceLoqmah: 5.5,
+    calories: 780,
+    allergens: ALLERGEN_DAIRY_GLUTEN_SOY,
+  },
+  {
+    id: 'cheese-mortadella',
+    category: 'cheese',
+    name: { ar: 'جبنة ومرتديلا', en: 'Cheese & Mortadella' },
+    priceLarge: 13.5,
+    priceMedium: 9.5,
+    priceLoqmah: 5.5,
+    calories: 898,
+    allergens: ALLERGEN_DAIRY_GLUTEN_MEAT,
+  },
+  {
+    id: 'cheese-chicken',
+    category: 'cheese',
+    name: { ar: 'جبنة ودجاج', en: 'Cheese & Chicken' },
+    priceLarge: 14.5,
+    priceMedium: 8.5,
+    priceLoqmah: 5.5,
+    calories: 751,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'cheese-mild-sauce',
+    category: 'cheese',
+    name: { ar: 'جبنة وصوص بارد', en: 'Cheese & Mild Sauce' },
+    priceLarge: 13.5,
+    priceMedium: 8.5,
+    priceLoqmah: 5.5,
+    calories: 854,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'cheese-spicy-sauce',
+    category: 'cheese',
+    name: { ar: 'جبنة وصوص حار', en: 'Cheese & Spicy Sauce' },
+    priceLarge: 13.5,
+    priceMedium: 8.5,
+    priceLoqmah: 5.5,
+    calories: 826,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'cheese-meat',
+    category: 'cheese',
+    name: { ar: 'جبنة ولحم', en: 'Cheese & Meat' },
+    priceLarge: 14.5,
+    priceMedium: 9.5,
+    priceLoqmah: 5.5,
+    calories: 838,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'cheese-meat-mild',
+    category: 'cheese',
+    name: { ar: 'جبنة ولحم وصوص بارد', en: 'Cheese, Meat & Mild Sauce' },
+    priceLarge: 14.5,
+    priceMedium: 9.5,
+    priceLoqmah: 5.5,
+    calories: 673,
+    allergens: ALLERGEN_DAIRY_GLUTEN_MEAT,
+  },
+  {
+    id: 'cheese-meat-spicy',
+    category: 'cheese',
+    name: { ar: 'جبنة ولحم وصوص حار', en: 'Cheese, Meat & Spicy Sauce' },
+    priceLarge: 14.5,
+    priceMedium: 9.5,
+    priceLoqmah: 5.5,
+    calories: 854,
+    allergens: ALLERGEN_DAIRY_GLUTEN_MEAT,
+  },
+  {
+    id: 'cheese-extra',
+    category: 'cheese',
+    name: { ar: 'جبنة اكسترا', en: 'Extra Cheese' },
+    priceLarge: 14.5,
+    priceMedium: 9.5,
+    priceLoqmah: null,
+    calories: 896,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'three-cheeses',
+    category: 'cheese',
+    name: { ar: 'الأجبان الثلاثة', en: 'Three Cheeses' },
+    priceLarge: 13.5,
+    priceMedium: 8.5,
+    priceLoqmah: 5,
+    calories: 889,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+
+  // Meat (لحم)
+  {
+    id: 'meat-lahm-bi-ajeen',
+    category: 'meat',
+    name: { ar: 'لحم بعجين', en: 'Lahm bi Ajeen' },
+    priceLarge: 12.5,
+    priceMedium: 7.5,
+    priceLoqmah: 5,
+    calories: 876,
+    allergens: ALLERGEN_DAIRY_GLUTEN_MEAT,
+  },
+  {
+    id: 'meat-mild-sauce',
+    category: 'meat',
+    name: { ar: 'لحم وصوص بارد', en: 'Meat & Mild Sauce' },
+    priceLarge: 12.5,
+    priceMedium: 7.5,
+    priceLoqmah: 5.5,
+    calories: 882,
+    allergens: ALLERGEN_DAIRY_GLUTEN_MEAT,
+  },
+  {
+    id: 'meat-spicy-sauce',
+    category: 'meat',
+    name: { ar: 'لحم وصوص حار', en: 'Meat & Spicy Sauce' },
+    priceLarge: 12.5,
+    priceMedium: 7.5,
+    priceLoqmah: 5.5,
+    calories: 882,
+    allergens: ALLERGEN_DAIRY_GLUTEN_MEAT,
+  },
+  {
+    id: 'meat-shami',
+    category: 'meat',
+    name: { ar: 'لحم شامية', en: 'Shami Meat' },
+    priceLarge: 12.5,
+    priceMedium: 7.5,
+    priceLoqmah: 5,
+    calories: 954,
+    allergens: ALLERGEN_DAIRY_GLUTEN_MEAT,
+  },
+
+  // Labneh (لبنة)
+  {
+    id: 'labneh-plain',
+    category: 'labneh',
+    name: { ar: 'لبنة سادة', en: 'Plain Labneh' },
+    priceLarge: 10,
+    priceMedium: 7,
+    priceLoqmah: 4.5,
+    calories: 518,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'labneh-zaatar',
+    category: 'labneh',
+    name: { ar: 'لبنة وزعتر', en: 'Labneh & Za’atar' },
+    priceLarge: 11.5,
+    priceMedium: 8,
+    priceLoqmah: 4.5,
+    calories: 576,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'labneh-olives',
+    category: 'labneh',
+    name: { ar: 'لبنة وزيتون', en: 'Labneh & Olives' },
+    priceLarge: 11,
+    priceMedium: 8,
+    priceLoqmah: 4.5,
+    calories: 568,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'labneh-honey',
+    category: 'labneh',
+    name: { ar: 'لبنة وعسل', en: 'Labneh & Honey' },
+    priceLarge: 11,
+    priceMedium: 8,
+    priceLoqmah: 5,
+    calories: 689,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'labneh-extra',
+    category: 'labneh',
+    name: { ar: 'لبنة اكسترا', en: 'Extra Labneh' },
+    priceLarge: 11,
+    priceMedium: 9,
+    priceLoqmah: null,
+    calories: 600,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+
+  // Assorted (متنوع)
+  {
+    id: 'assorted-duqqa',
+    category: 'assorted',
+    name: { ar: 'دقة', en: 'Duqqa' },
+    priceLarge: 8,
+    priceMedium: 6,
+    priceLoqmah: 4,
+    calories: 757,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'assorted-duqqa-extra',
+    category: 'assorted',
+    name: { ar: 'دقة اكسترا', en: 'Extra Duqqa' },
+    priceLarge: 9,
+    priceMedium: null,
+    priceLoqmah: null,
+    calories: 777,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'assorted-zaatar',
+    category: 'assorted',
+    name: { ar: 'زعتر', en: 'Za’atar' },
+    priceLarge: 10,
+    priceMedium: 6,
+    priceLoqmah: 4,
+    calories: 586,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'assorted-zaatar-extra',
+    category: 'assorted',
+    name: { ar: 'زعتر اكسترا', en: 'Extra Za’atar' },
+    priceLarge: 11,
+    priceMedium: 8,
+    priceLoqmah: 4.5,
+    calories: 570,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'assorted-kishk',
+    category: 'assorted',
+    name: { ar: 'كشك', en: 'Kishk' },
+    priceLarge: 10.5,
+    priceMedium: 7.5,
+    priceLoqmah: 5,
+    calories: 302,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'assorted-pizza-mankousheh',
+    category: 'assorted',
+    name: { ar: 'بيتزا منقوشة', en: 'Mankousheh Pizza' },
+    priceLarge: 15.5,
+    priceMedium: null,
+    priceLoqmah: null,
+    calories: 366,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+  {
+    id: 'assorted-spinach',
+    category: 'assorted',
+    name: { ar: 'سبانخ', en: 'Spinach' },
+    priceLarge: 10,
+    priceMedium: 7,
+    priceLoqmah: 4,
+    calories: 636,
+    allergens: ALLERGEN_DAIRY_GLUTEN_SOY,
+  },
+  {
+    id: 'assorted-musakhan',
+    category: 'assorted',
+    name: { ar: 'دجاج مسخن', en: 'Musakhan Chicken' },
+    priceLarge: 12.5,
+    priceMedium: 6.5,
+    priceLoqmah: 5,
+    calories: 697,
+    allergens: ALLERGEN_DAIRY_GLUTEN,
+  },
+
+  // Sweet (حليها)
+  {
+    id: 'sweet-nutella',
+    category: 'sweet',
+    name: { ar: 'نوتيلا', en: 'Nutella' },
+    priceLarge: 11.5,
+    priceMedium: 7.5,
+    priceLoqmah: 5,
+    calories: 757,
+    allergens: ALLERGEN_SWEET,
+  },
+  {
+    id: 'sweet-halawa-date',
+    category: 'sweet',
+    name: { ar: 'حلاوة ودبس التمر', en: 'Halawa & Date Syrup' },
+    priceLarge: 12.5,
+    priceMedium: 8.5,
+    priceLoqmah: 5.5,
+    calories: 777,
+    allergens: ALLERGEN_SWEET,
+  },
+] as const;
 
 export const MANKOUSHEH_VARIETIES: readonly MankoushehVariety[] = [
   { id: 'zaatar', label: { ar: 'زعتر', en: 'Za’atar' } },
@@ -314,8 +747,8 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
       en: 'The origin of mankousheh in carefully crafted varieties.',
     },
     varieties: {
-      ar: ['زعتر', 'لحم', 'جبنة', 'لحم بعجين'],
-      en: ['Za’atar', 'Meat', 'Cheese', 'Lahm bi Ajeen'],
+      ar: ['جبنة', 'لحم', 'لبنة', 'متنوع', 'حليها'],
+      en: ['Cheese', 'Meat', 'Labneh', 'Assorted', 'Sweet'],
     },
   },
   {
@@ -331,6 +764,10 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
     description: {
       ar: 'تشكيلة كيك أنيق وحلويات منوعة.',
       en: 'A curated selection of elegant cakes.',
+    },
+    varieties: {
+      ar: ['بلاك فورست', 'وايت فورست', 'فيريرو روشيه', 'الجزر', 'الفراولة'],
+      en: ['Black Forest', 'White Forest', 'Ferrero Rocher', 'Carrot', 'Strawberry'],
     },
     searchTerms: {
       ar: [
@@ -424,40 +861,13 @@ export const ADDITIONAL_PRODUCTS: readonly AdditionalProduct[] = [
   },
 ] as const;
 
-export const STORE_QUOTES: readonly StoreQuote[] = [
-  {
-    id: 'tiramisu-quote',
-    text: {
-      ar: '«التيراميسو عندنا حكاية ثانية.. طبقات من اللطافة المغموسة بنكهة القهوة الفاخرة والكاكاو المر»',
-      en: '“Our Tiramisu is another story.. delicate layers steeped in fine coffee flavor and bitter cocoa”',
-    },
-    context: {
-      ar: 'تيراميسو',
-      en: 'Tiramisu',
-    },
-    postUrl: 'https://www.instagram.com/p/DgDdvfuu1hK/',
-  },
-  {
-    id: 'box-quote',
-    text: {
-      ar: '«لو البوكس على ذوقك.. إيش تختار فيه؟»',
-      en: '“If the box were made to your taste.. what would you pick inside?”',
-    },
-    context: {
-      ar: 'بوكس اللقمة',
-      en: 'Loqmah Box',
-    },
-    postUrl: 'https://www.instagram.com/p/DgC9YvRODHs/',
-  },
-] as const;
-
 export const CATEGORY_PHOTO_CARDS: readonly CategoryPhotoCard[] = [
   {
     id: 'cat-mankousheh',
     title: { ar: 'مناقيش', en: 'Mankousheh' },
     imageUrl:
       'https://images.weserv.nl/?url=www.instagram.com/p/DgBfYoDt48i/media/?size=l&output=jpg',
-    targetCategory: 'savory',
+    targetCategory: 'mnakeesh',
   },
   {
     id: 'cat-pastries',
@@ -484,25 +894,25 @@ export const CATEGORY_PHOTO_CARDS: readonly CategoryPhotoCard[] = [
 
 export const FAQ_ITEMS: readonly FaqItem[] = [
   {
+    id: 'faq-mnakeesh-prices',
+    question: {
+      ar: 'هل تتوفر قائمة أسعار المناقيش والسعرات الحرارية؟',
+      en: 'Are Mnakeesh prices and calories available?',
+    },
+    answer: {
+      ar: 'نعم، قائمة المناقيش الكاملة بأسعار الأحجام (كبير، وسط، لقمة) والسعرات ومسببات الحساسية معروضة في صفحة المنتجات.',
+      en: 'Yes, the complete Mnakeesh menu with Large, Medium, and Loqmah prices, calories, and allergens is available on the Products page.',
+    },
+  },
+  {
     id: 'faq-occasion-cakes',
     question: {
       ar: 'ما أنواع الكيك الأنيق المتوفرة للمناسبات؟',
       en: 'Which elegant cakes are available for occasions?',
     },
     answer: {
-      ar: 'تجد أصناف الكيك الأنيق المتوفرة مع صورها في صفحة المنتجات.',
-      en: 'You can view all available elegant cakes with photos on the Products page.',
-    },
-  },
-  {
-    id: 'faq-loqmah-box',
-    question: {
-      ar: 'كيف أختار تشكيلة «بوكس اللقمة»؟',
-      en: 'How can I choose the Loqmah Box assortment?',
-    },
-    answer: {
-      ar: '«بوكس اللقمة» بوكس مناقيش صغيرة متنوعة تختار أصنافها على ذوقك؛ راجع تفاصيله في صفحة المنتجات.',
-      en: 'The Loqmah Box is an assorted mini mankousheh box tailored to your taste; see full details on the Products page.',
+      ar: 'بلاك فورست، وايت فورست، فيريرو روشيه، الجزر، والفراولة؛ وللأسعار والطلب تواصل معنا عبر واتساب أو تطبيقات التوصيل.',
+      en: 'Black Forest, White Forest, Ferrero Rocher, Carrot, and Strawberry cakes. Reach us on WhatsApp or delivery apps for ordering.',
     },
   },
   {
@@ -512,8 +922,8 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
       en: 'Are seasonal specialties available?',
     },
     answer: {
-      ar: 'نعم، تتوفر أصناف رمضان ضمن تشكيلة اطايب مرحبا في صفحة المنتجات.',
-      en: 'Yes, Ramadan specialties are available within Atayeb Marhaba’s selection on the Products page.',
+      ar: 'نعم، تتوفر أصناف رمضان ورقاق مرحبا ضمن تشكيلة اطايب مرحبا.',
+      en: 'Yes, Ramadan specialties and Raqaq Marhaba are part of Atayeb Marhaba’s selection.',
     },
   },
 ] as const;
@@ -526,6 +936,10 @@ export const UI_COPY = {
   brandShort: {
     ar: 'اطايب مرحبا',
     en: 'Atayeb Marhaba',
+  },
+  sinceLabel: {
+    ar: 'مخبز مرحبا · منذ 1982',
+    en: 'Marhaba Bakery · Since 1982',
   },
   cityLabel: {
     ar: 'مخبز في جدة',
@@ -541,7 +955,7 @@ export const UI_COPY = {
   },
   nav: {
     home: { ar: 'الرئيسية', en: 'Home' },
-    products: { ar: 'المنتجات', en: 'Products' },
+    products: { ar: 'القائمة', en: 'Menu' },
     gallery: { ar: 'المعرض', en: 'Gallery' },
     branches: { ar: 'الفروع', en: 'Branches' },
     contact: { ar: 'التواصل', en: 'Contact' },
@@ -554,122 +968,112 @@ export const UI_COPY = {
     switchToLight: { ar: 'التبديل إلى الوضع الفاتح', en: 'Switch to light mode' },
     themeDarkLabel: { ar: 'داكن', en: 'Dark' },
     themeLightLabel: { ar: 'فاتح', en: 'Light' },
-    viewAllProducts: { ar: 'تصفح جميع المنتجات', en: 'Explore all products' },
-    viewGallery: { ar: 'عرض المعرض', en: 'View gallery' },
-    viewBranches: { ar: 'فروع جدة', en: 'Jeddah Branches' },
+    browseMenu: { ar: 'تصفح القائمة والأسعار', en: 'Browse Menu & Prices' },
+    viewBranches: { ar: 'فروع جدة وأرقامها', en: 'Jeddah Branches & Phones' },
     openInMaps: { ar: 'خرائط Google', en: 'Google Maps' },
+    callBranch: { ar: 'اتصال مباشر', en: 'Call Branch' },
     copyAddress: { ar: 'نسخ العنوان', en: 'Copy address' },
+    copyPhone: { ar: 'نسخ الرقم', en: 'Copy number' },
     copied: { ar: 'تم النسخ', en: 'Copied' },
     clearSearch: { ar: 'مسح البحث', en: 'Clear search' },
     resetFilters: { ar: 'إعادة ضبط التصفية', en: 'Reset filters' },
-    orderOnInstagram: { ar: 'اطلب عبر إنستغرام', en: 'Order on Instagram' },
-    instagramCta: { ar: 'راسلنا على إنستغرام', en: 'Message us on Instagram' },
+    orderOnWhatsapp: { ar: 'اطلب عبر واتساب', en: 'Order on WhatsApp' },
+    sendBoxOnWhatsapp: { ar: 'أرسل التشكيلة على واتساب', en: 'Send Mix on WhatsApp' },
+    orderOnInstagram: { ar: 'إنستغرام @atayeb_marhaba', en: 'Instagram @atayeb_marhaba' },
     originalPost: { ar: 'المنشور الأصلي', en: 'Original post' },
     close: { ar: 'إغلاق', en: 'Close' },
     next: { ar: 'التالي', en: 'Next' },
     previous: { ar: 'السابق', en: 'Previous' },
-    goToProducts: { ar: 'الانتقال إلى المنتجات', en: 'Go to Products' },
-  },
-  pricingNote: {
-    ar: 'تُؤكَّد الأسعار وتفاصيل الطلب عبر رسائل إنستغرام أو في تطبيقات التوصيل.',
-    en: 'Prices and order details are confirmed via Instagram messages or in delivery apps.',
+    goToProducts: { ar: 'الانتقال إلى القائمة', en: 'Go to Menu' },
   },
   home: {
     heroLine1: { ar: 'اطايب مرحبا', en: 'Atayeb Marhaba' },
-    heroLine2: { ar: 'مخبز في جدة', en: 'Bakery in Jeddah' },
+    heroLine2: { ar: 'مخبز في جدة · منذ 1982', en: 'Jeddah Bakery · Since 1982' },
     heroSubtitle: {
-      ar: 'من المناقيش والمعجنات إلى الكيك والحلويات.',
-      en: 'From mankousheh and pastries to cakes and sweets.',
-    },
-    heroProductsCta: { ar: 'المنتجات', en: 'Products' },
-    heroBranchesCta: { ar: 'فروع جدة', en: 'Jeddah Branches' },
-    stripTitle: { ar: 'لقطات من المخبز', en: 'From the Bakery' },
-    stripHint: {
-      ar: 'انقر على أي صورة لعرضها بحجم كبير',
-      en: 'Select any photo to preview it above',
+      ar: 'أصل المنقوشة، معجنات مختارة بعناية، كيك أنيق وحلويات منوعة.',
+      en: 'The origin of mankousheh, carefully crafted pastries, elegant cakes, and sweets.',
     },
     categoriesTitle: { ar: 'الأقسام', en: 'Categories' },
     browseCategoryPrefix: { ar: 'تصفح قسم', en: 'Browse category' },
-    quotesTitle: { ar: 'من حسابنا على إنستغرام', en: 'From Our Instagram' },
-    originalPostLink: { ar: 'من المنشور الأصلي', en: 'From the original post' },
-    productsHeading: { ar: 'منتجاتنا', en: 'Our Products' },
-    productsSubheading: {
-      ar: 'تشكيلة مختارة من المناقيش والمعجنات والكيك والحلويات.',
-      en: 'A curated selection of mankousheh, pastries, cakes, and sweets.',
-    },
+    deliveryBarLabel: { ar: 'متوفر عبر تطبيقات التوصيل', en: 'Available on delivery apps' },
   },
   loqmahCard: {
     title: { ar: 'بوكس اللقمة على ذوقك', en: 'Loqmah Box to Your Taste' },
-    quote: {
-      ar: '«لو البوكس على ذوقك.. إيش تختار فيه؟»',
-      en: '“If the box were made to your taste.. what would you pick inside?”',
-    },
-    instruction: {
-      ar: 'اختر أصناف المناقيش التي تفضلها في البوكس:',
-      en: 'Pick your preferred mankousheh varieties for the box:',
-    },
-    selectedLabel: { ar: 'تشكيلتك المختارة:', en: 'Your selected mix:' },
-    emptyPrompt: {
-      ar: 'اختر صنفاً واحداً أو أكثر لعرض تشكيلتك.',
-      en: 'Select one or more varieties to preview your mix.',
-    },
-  },
-  howToOrder: {
-    title: { ar: 'كيف تطلب', en: 'How to Order' },
     subtitle: {
-      ar: 'مسارات الطلب والتواصل المتاحة لدى اطايب مرحبا في جدة.',
-      en: 'Available ways to order and connect with Atayeb Marhaba in Jeddah.',
+      ar: 'اختر أصنافك المفضلة وأرسل التشكيلة مباشرة عبر واتساب.',
+      en: 'Pick your favorite varieties and send your mix directly on WhatsApp.',
     },
-    step1Title: { ar: 'تطبيقات التوصيل', en: 'Delivery Apps' },
-    step1Desc: {
-      ar: 'الطلب متاح عبر التطبيقات التالية بالاسم:',
-      en: 'Ordering is available through these apps:',
+    emptyPrompt: {
+      ar: 'اختر صنفاً واحداً أو أكثر لتجهيز تشكيلتك.',
+      en: 'Select one or more varieties to build your mix.',
     },
-    step2Title: { ar: 'فروع جدة', en: 'Jeddah Branches' },
-    step2Desc: {
-      ar: 'عناوين فروع جدة عبر خرائط Google',
-      en: 'Jeddah branch addresses via Google Maps',
-    },
-    step3Title: { ar: 'إنستغرام', en: 'Instagram' },
-    step3Desc: {
-      ar: 'المراسلة عبر الحساب الرسمي @atayeb_marhaba',
-      en: 'Message via official account @atayeb_marhaba',
+    whatsappPrefix: {
+      ar: 'أهلاً اطايب مرحبا، أرغب في الاستفسار عن بوكس اللقمة بالتشكيلة التالية:',
+      en: 'Hello Atayeb Marhaba, I would like to inquire about a Loqmah Box with:',
     },
   },
   faq: {
     title: { ar: 'أسئلة شائعة', en: 'Frequently Asked Questions' },
     subtitle: {
-      ar: 'إجابات مختصرة من المعلومات الموثّقة عن الأصناف.',
-      en: 'Brief verified answers about our offerings.',
+      ar: 'إجابات مختصرة وموثّقة عن القائمة والأصناف.',
+      en: 'Brief verified answers about the menu and items.',
     },
   },
   products: {
-    pageTitle: { ar: 'المنتجات', en: 'Products' },
+    pageTitle: { ar: 'القائمة والمنتجات', en: 'Menu & Products' },
     pageSubtitle: {
-      ar: 'من المناقيش والمعجنات إلى الكيك والحلويات.',
-      en: 'From mankousheh and pastries to cakes and sweets.',
+      ar: 'قائمة المناقيش الرسمية بالأسعار والسعرات، إلى جانب تشكيلة المخبز والحلويات.',
+      en: 'Official Mnakeesh menu with prices and calories, alongside bakery specialties and sweets.',
     },
     searchPlaceholder: {
-      ar: 'ابحث عن صنف أو نكهة (مثل: زعتر، فيريرو، سماق، ساوردو...)',
-      en: 'Search item or flavor (e.g. za’atar, Ferrero, sumac, sourdough...)',
+      ar: 'ابحث في القائمة أو الأصناف (مثل: عكاوي، زعتر، مسخن، نوتيلا، فيريرو...)',
+      en: 'Search menu or items (e.g. Akkawi, za’atar, musakhan, Nutella, Ferrero...)',
     },
     noResults: {
       ar: 'لا توجد أصناف مطابقة لبحثك الحالي.',
       en: 'No items match your current search.',
     },
     moreHeading: { ar: 'أصناف أخرى من المخبز', en: 'More From the Bakery' },
+    showcaseHeading: { ar: 'تشكيلة المخبز والحلويات', en: 'Bakery & Sweets Selection' },
+    mnakeeshHeading: { ar: 'قائمة المناقيش الرسمية', en: 'Official Mnakeesh Menu' },
+    currency: { ar: 'ر.س', en: 'SAR' },
+    caloriesUnit: { ar: 'سعرة', en: 'cal' },
+    sizeLarge: { ar: 'كبير', en: 'Large' },
+    sizeMedium: { ar: 'وسط', en: 'Medium' },
+    sizeLoqmah: { ar: 'لقمة', en: 'Loqmah' },
+    caloriesCol: { ar: 'السعرات', en: 'Calories' },
+    allergensLabel: { ar: 'مسببات الحساسية', en: 'Allergens' },
+    showAllergens: { ar: 'عرض مسببات الحساسية', en: 'Show allergens' },
+    hideAllergens: { ar: 'إخفاء مسببات الحساسية', en: 'Hide allergens' },
+    calorieNote: {
+      ar: 'ملاحظة: الاحتياج اليومي من السعرات الحرارية للرجل 2500 سعرة، وللمرأة 2000 سعرة، وللطفل 1800 سعرة.',
+      en: 'Note: The daily calorie requirement for a man is 2500 cal, for a woman is 2000 cal and for a child is 1800 cal.',
+    },
+    orderStripTitle: {
+      ar: 'للطلب أو الاستفسار عن الكيك وأصناف المخبز',
+      en: 'To order or inquire about cakes & bakery items',
+    },
     filters: {
-      all: { ar: 'الكل', en: 'All' },
-      savory: { ar: 'مناقيش ومخبوزات', en: 'Savory & Breads' },
+      mnakeesh: { ar: 'قائمة المناقيش والأسعار', en: 'Mnakeesh Menu & Prices' },
+      all: { ar: 'كل أصناف المخبز', en: 'All Bakery Items' },
+      savory: { ar: 'مخبوزات ومعجنات', en: 'Savory & Breads' },
       sweets: { ar: 'كيك وحلويات', en: 'Cakes & Sweets' },
       seasonal: { ar: 'أصناف موسمية', en: 'Seasonal' },
+    },
+    mnakeeshCategories: {
+      all: { ar: 'الكل', en: 'All' },
+      cheese: { ar: 'جبنة', en: 'Cheese' },
+      meat: { ar: 'لحم', en: 'Meat' },
+      labneh: { ar: 'لبنة', en: 'Labneh' },
+      assorted: { ar: 'متنوع', en: 'Assorted' },
+      sweet: { ar: 'حليها', en: 'Sweet' },
     },
   },
   gallery: {
     pageTitle: { ar: 'المعرض', en: 'Gallery' },
     pageSubtitle: {
-      ar: 'صور من حسابنا على إنستغرام.',
-      en: 'Photos from our Instagram account.',
+      ar: 'لقطات من حسابنا الرسمي على إنستغرام.',
+      en: 'Highlights from our official Instagram account.',
     },
     filters: {
       all: { ar: 'الكل', en: 'All' },
@@ -680,59 +1084,50 @@ export const UI_COPY = {
   branches: {
     pageTitle: { ar: 'فروع جدة', en: 'Jeddah Branches' },
     pageSubtitle: {
-      ar: 'اختر الحي أو ابحث بالعنوان، وافتح تفاصيل الفرع وخريطته أو انسخ العنوان مباشرة.',
-      en: 'Filter by district or search by address, open any branch for its map and details, or copy the address.',
+      ar: 'اختر الحي لعرض الخريطة والرقم المباشر أو العنوان الكامل.',
+      en: 'Select any district to view its live map, direct phone line, or full address.',
     },
     searchPlaceholder: {
-      ar: 'ابحث بالحي أو الطريق (مثل: الروضة، السلامة، Prince Sultan...)',
-      en: 'Search by district or road (e.g. Al Rawdah, Al-Salamah, Prince Sultan...)',
+      ar: 'ابحث باسم الحي أو الطريق (مثل: الصفا، الزهراء، الروضة، أبحر...)',
+      en: 'Search by district or road (e.g. Al Safa, Al Zahra, Al Rawdah, Abhur...)',
     },
     noResults: {
-      ar: 'لا توجد عناوين مطابقة لبحثك الحالي.',
-      en: 'No addresses match your current search.',
+      ar: 'لا توجد فروع مطابقة لبحثك الحالي.',
+      en: 'No branches match your current search.',
     },
-    districtFilterLabel: { ar: 'تصفية حسب الحي', en: 'Filter by district' },
-    allDistricts: { ar: 'جميع الأحياء', en: 'All Districts' },
-    roadFilterLabel: { ar: 'تصفية حسب الطريق', en: 'Filter by road' },
-    viewDetails: { ar: 'التفاصيل والخريطة', en: 'Details & Map' },
-    hideDetails: { ar: 'إخفاء التفاصيل', en: 'Hide Details' },
-    districtLabel: { ar: 'الحي', en: 'District' },
-    fullAddressLabel: { ar: 'العنوان الكامل', en: 'Full Address' },
+    tabs: {
+      all: { ar: 'الكل', en: 'All' },
+      'with-phone': { ar: 'بأرقام مباشرة', en: 'Direct Phone' },
+      'with-address': { ar: 'بعنوان مفصّل', en: 'Street Address' },
+    },
+    directPhoneLabel: { ar: 'رقم الفرع للاستفسارات', en: 'Direct Branch Phone' },
+    fullAddressLabel: { ar: 'العنوان', en: 'Address' },
+    generalWhatsappLabel: {
+      ar: 'واتساب الطلبات والاستفسارات العامة',
+      en: 'General Orders & Inquiries WhatsApp',
+    },
     mapTitlePrefix: { ar: 'خريطة موقع اطايب مرحبا —', en: 'Map of Atayeb Marhaba —' },
-    roadFilters: {
-      all: { ar: 'جميع الطرق', en: 'All Roads' },
-      'prince-sultan': { ar: 'طريق الأمير سلطان', en: 'Prince Sultan Rd' },
-      'king-abdulaziz': { ar: 'طريق الملك عبدالعزيز', en: 'King Abdulaziz Rd' },
-      'prince-mohammed': {
-        ar: 'شارع الأمير محمد بن عبدالعزيز',
-        en: 'Prince Mohammed Bin Abdulaziz St',
-      },
-    },
   },
   contact: {
     pageTitle: { ar: 'التواصل والطلب', en: 'Contact & Ordering' },
     pageSubtitle: {
-      ar: 'تواصل معنا عبر إنستغرام أو اطلب عبر تطبيقات التوصيل المتاحة.',
-      en: 'Reach out to us on Instagram or order through available delivery apps.',
+      ar: 'تواصل معنا مباشرة عبر واتساب أو إنستغرام، أو اطلب عبر تطبيقات التوصيل.',
+      en: 'Reach us directly on WhatsApp or Instagram, or order via delivery apps.',
     },
-    bioSourceLabel: {
-      ar: 'من سيرة حساب إنستغرام',
-      en: 'From our Instagram bio',
+    whatsappTitle: { ar: 'واتساب', en: 'WhatsApp' },
+    whatsappDesc: {
+      ar: 'للطلبات السريعة والاستفسارات العامة.',
+      en: 'For quick orders and general inquiries.',
     },
-    instagramCardTitle: { ar: 'إنستغرام', en: 'Instagram' },
-    instagramCardDesc: {
-      ar: 'تواصل معنا وتابع أحدث الأصناف عبر حسابنا الرسمي على إنستغرام.',
-      en: 'Connect with us and follow our latest creations on our official Instagram account.',
-    },
-    facebookTitle: { ar: 'فيسبوك', en: 'Facebook' },
+    instagramTitle: { ar: 'إنستغرام وفيسبوك', en: 'Instagram & Facebook' },
     facebookText: {
-      ar: 'تتوفر صفحتنا على فيسبوك باسم Atayeb Marhaba.',
-      en: 'Our Facebook page is available under the name Atayeb Marhaba.',
+      ar: 'صفحة فيسبوك: Atayeb Marhaba',
+      en: 'Facebook page: Atayeb Marhaba',
     },
-    deliveryTitle: { ar: 'الطلب عبر تطبيقات التوصيل', en: 'Order via Delivery Apps' },
-    deliveryText: {
-      ar: 'الطلب متاح عبر تطبيقات التوصيل التالية:',
-      en: 'Ordering is available through the following delivery apps:',
+    deliveryTitle: { ar: 'تطبيقات التوصيل', en: 'Delivery Apps' },
+    deliveryDesc: {
+      ar: 'متوفر في جدة عبر التطبيقات التالية:',
+      en: 'Available in Jeddah through these apps:',
     },
   },
 } as const;
