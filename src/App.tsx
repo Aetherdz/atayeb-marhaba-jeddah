@@ -47,7 +47,7 @@ export default function App() {
   const [darkMode, setDarkMode] = useState<boolean>(getInitialTheme);
   const [activePage, setActivePage] = useState<PageId>(getInitialPage);
   const [productCategory, setProductCategory] =
-    useState<ProductCategory>('mnakeesh');
+    useState<ProductCategory>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   // Sync HTML dir, lang, and document title when language switches
@@ -88,7 +88,7 @@ export default function App() {
     if (page === 'products' && nextProductCategory) {
       setProductCategory(nextProductCategory);
     } else if (page === 'products' && !nextProductCategory) {
-      setProductCategory('mnakeesh');
+      setProductCategory('all');
     }
     setActivePage(page);
     if (window.location.hash !== `#${page}`) {

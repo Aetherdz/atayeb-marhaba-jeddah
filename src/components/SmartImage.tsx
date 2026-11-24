@@ -8,6 +8,7 @@ interface SmartImageProps {
   containerClassName?: string;
   fit?: 'cover' | 'contain';
   priority?: boolean;
+  showSkeleton?: boolean;
 }
 
 function normalizeImageUrl(rawUrl: string): string {
@@ -25,6 +26,7 @@ export function SmartImage({
   containerClassName = '',
   fit = 'cover',
   priority = false,
+  showSkeleton = true,
 }: SmartImageProps) {
   const resolvedSrc = normalizeImageUrl(src);
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -47,6 +49,13 @@ export function SmartImage({
     <div
       className={`relative w-full h-full overflow-hidden bg-[#F2E8DC] dark:bg-[#261D18] ${containerClassName}`}
     >
+      {showSkeleton && !loaded && !failed && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-10 skeleton-shimmer"
+        />
+      )}
+
       {!failed ? (
         <img
           ref={imgRef}
